@@ -1,13 +1,59 @@
-import React from 'react';
+@import '../../../styles/sass/mixins';
+
+.home {
+  height: 100vh;
+  width: 100vw;
+  @include flex;
+
+  .particles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    opacity: .7;
+  }
+
+  .title_wrapper {
+    padding: 16px;
+    margin: 0 10%;
+    @include flex;
+    flex-wrap: wrap;
+    word-break: break-word;
+    border: 1px solid #F0F0F0;
+    background-color: transparent;
+
+    @media (max-width: 280px) {
+      border: none;
+    }
 
 
-const Home=()=>{
-    return (
-        <div >
+    & h1 {
+      text-align: center;
+      font-family: 'Poppins', sans-serif;
+      letter-spacing: 2px;
+      color: #F0F0F0;
+      text-transform: uppercase;
+      font-weight: 600;
 
-        </div>
-    )
+      font-size: 45px;
+      line-height: 1.2;
+      @media (max-width: 992px) {
+        font-size: 35px;
+      }
+      @media (max-width: 470px) {
+        font-size: 25px;
+      }
+      @media (max-width: 470px) {
+        font-size: 18px;
+      }
+      @media (max-width: 280px) {
+        font-size: 0;
+        border: none;
+      }
+    }
+
+  }
 }
 
 
-export default Home;

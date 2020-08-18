@@ -1,26 +1,21 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import Header from "./main/ui/header/header";
+import {HashRouter, Redirect, Route,} from "react-router-dom";
+import Home from "./main/ui/home/home";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const App = () => {
+    return (
+        <div className="App">
+            <HashRouter>
+
+                {/*provider*/}
+                <Header/>
+                <Home/>
+                <Route exact path='/' render={() => <Redirect to={'/home'}/>}/>
+            </HashRouter>
+        </div>
+    );
 }
 
 export default App;

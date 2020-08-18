@@ -1,16 +1,269 @@
-import React from 'react';
+@import '../../../styles/sass/variables';
 
 
-
-
-
-const Header = () => {
-    return (
-        <div>
-
-        </div>
-    )
+* {
+  box-sizing: border-box;
 }
 
+.header {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 1000;
 
-export default Header;
+  width: 100%;
+  padding: 17px 0;
+
+
+  .container {
+    width: 100%;
+    max-width: 1140px;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin: 0 auto;
+    background-color: transparent;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    @media (max-width: 992px) {
+      width: 85%;
+    }
+
+
+    .logo_wrapper {
+
+      .logo_link {
+        color: #F0F0F0;
+        font-weight: 500;
+        font-family: 'Poppins', sans-serif;
+        font-size: 26px;
+
+        text-decoration: none;
+        transition: all 0.3s ease-in-out;
+        background-color: transparent;
+
+        & span {
+          color: $mainColor;
+        }
+      }
+    }
+
+    .navbar {
+      text-decoration: none;
+      list-style-type: none;
+      display: flex;
+      align-items: center;
+      //justify-content: flex-end;
+      //flex-grow: 1;
+      @media (max-width: 992px) {
+        display: none;
+      }
+
+      & li {
+        cursor: pointer;
+
+
+        .link {
+          text-decoration: none;
+          color: #ffffff;
+          padding: 5px 15px;
+          font-size: 1em;
+          transition: all 0.5s ease-in-out;
+          display: block;
+          position: relative;
+          background-color: transparent;
+
+
+          &:after {
+            content: '';
+
+            position: absolute;
+            height: 3px;
+            left: 50%;
+            bottom: -7px;
+            transition: all 0.5s ease-in-out;
+            transform: translate(-50%, 0) translateZ(0);
+            color: #fff;
+            width: 0;
+
+          }
+
+
+          &:hover {
+            color: $mainColor;
+
+            &:after {
+              background-color: $mainColor;
+              width: 100%;
+              @media (min-width: 992px) {
+                width: calc(100% - 2.2em);
+              }
+            }
+          }
+
+
+        }
+
+        .active_link {
+          color: $mainColor;
+
+          &:hover {
+            &:after {
+              background-color: $mainColor;
+              width: 100%;
+            }
+          }
+
+            &:after {
+              background-color: $mainColor;
+              width: 100%;
+              @media (min-width: 992px) {
+                width: calc(100% - 2.2em);
+              }
+            }
+          }
+
+        }
+
+      }
+
+
+
+
+
+      .btn_toggler {
+        display: none;
+        cursor: pointer;
+        background: transparent;
+        border: none;
+        outline: none;
+        padding: .25rem .75rem;
+        font-size: 1.25rem;
+        line-height: 1;
+        border-radius: .25rem;
+        text-transform: none;
+        overflow: visible;
+        @media (max-width: 992px) {
+          display: block;
+        }
+        @media (min-width: 992px) {
+          display: none;
+        }
+
+        & span {
+          width: 48px;
+          height: 3px;
+          background-color: #F0F0F0;
+          display: block;
+          margin-bottom: 8px;
+          transition: all 0.3s ease-in-out;
+          font-size: 1.25rem;
+          line-height: 1;
+        }
+      }
+
+      .btn_collapse {
+        display: none;
+        cursor: pointer;
+        background: transparent;
+        border: none;
+        outline: none;
+        padding: .25rem .75rem;
+        font-size: 1.25rem;
+        line-height: 1;
+        border-radius: .25rem;
+        text-transform: none;
+        overflow: visible;
+        @media (max-width: 992px) {
+          display: block;
+        }
+        @media (min-width: 992px) {
+          display: none;
+        }
+
+        & span:nth-child(1) {
+          cursor: pointer;
+          transform: translate(0, 11px) rotate(45deg);
+          transition: all 0.3s ease-in-out;
+          width: 48px;
+          height: 3px;
+          background-color: #F0F0F0;
+          display: block;
+          margin-bottom: 8px;
+        }
+
+        & span:nth-child(2) {
+          width: 0;
+          height: 3px;
+          background-color: #F0F0F0;
+          display: block;
+          margin-bottom: 8px;
+        }
+
+        & span:nth-child(3) {
+          cursor: pointer;
+          transform: translate(0, -11px) rotate(-45deg);
+          transition: all 0.3s ease-in-out;
+          width: 48px;
+          height: 3px;
+          background-color: #F0F0F0;
+          display: block;
+        }
+
+      }
+
+    }
+
+    .vertical_navbar {
+      transition: all 0.7s ease-in-out;
+      background-color: #1e2326;
+
+      text-decoration: none;
+      list-style-type: none;
+
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 0 15px;
+
+      @media (max-width: 992px) {
+        margin-left: 6%;
+      }
+      @media (min-width: 992px) {
+        display: none;
+      }
+
+
+      & li {
+
+        & .link {
+
+          text-decoration: none;
+          color: #ffffff;
+          padding: 6px 15px;
+          font-size: 1em;
+          transition: all 0.5s ease-in-out;
+          display: block;
+          position: relative;
+          background-color: transparent;
+
+          &:hover, &:active {
+            color: $mainColor;
+          }
+        }
+
+        .active_link{
+          color: $mainColor;
+        }
+
+
+      }
+    }
+
+
+  }
+
