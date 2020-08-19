@@ -1,21 +1,50 @@
 import React, {useState} from 'react';
 import style from './header.module.scss'
 import {NavLink} from "react-router-dom";
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {faAngleDown} from '@fortawesome/free-solid-svg-icons'
+
+const arrowDownElement = <FontAwesomeIcon className={style.arrow_down} icon={faAngleDown}/>
 
 
 const Header = () => {
 
     const [isToggleCollapsed, setToggleCollapsed] = useState<boolean>(true);
 
+    const [isFeaturesSubMenuExpanded, setFeaturesSubMenuExpanded] = useState<boolean>(false);
+    const [isSettingsSubMenuExpanded, setSettingsSubMenuExpanded] = useState<boolean>(false);
+
     const onToggleMenu = () => {
         setToggleCollapsed(!isToggleCollapsed);
 
     }
 
+    const onExpandFeaturesSubMenu = () => {
+        if (isSettingsSubMenuExpanded) {
+            setSettingsSubMenuExpanded(false)
+        }
+        setFeaturesSubMenuExpanded(!isFeaturesSubMenuExpanded)
+
+    }
+    const onExpandSettingsSubMenu = () => {
+        if (isFeaturesSubMenuExpanded) {
+            setFeaturesSubMenuExpanded(false)
+        }
+        setSettingsSubMenuExpanded(!isSettingsSubMenuExpanded)
+    }
+
+    const onBlurFeaturesSubMenu = () => {
+        setFeaturesSubMenuExpanded(false)
+    }
+    const onBlurSettingsSubMenu = () => {
+        setSettingsSubMenuExpanded(false)
+    }
+
 
     return (
         <div className={style.header}>
-            <div className={style.container} style={!isToggleCollapsed ? {'backgroundColor':'#1e2326'} : {'backgroundColor':'transparent'}}>
+            <div className={style.container}
+                 style={!isToggleCollapsed ? {'backgroundColor': '#1e2326'} : {'backgroundColor': 'transparent'}}>
 
                 <div className={style.logo_wrapper}>
                     <NavLink className={style.logo_link} to={'/home'}>
@@ -27,18 +56,61 @@ const Header = () => {
                     <li>
                         <NavLink activeClassName={style.active_link} className={style.link} to={'/home'}>Home</NavLink>
                     </li>
+
                     <li>
-                        <NavLink activeClassName={style.active_link} className={style.link} to={'/profile'}>Profile</NavLink>
+                        <NavLink activeClassName={style.active_link} className={style.link}
+                                 to={'/profile'}>Profile</NavLink>
+                    </li>
+
+                    <li>
+                        <NavLink activeClassName={style.active_link} className={style.link}
+                                 to={'/features'}>Features {arrowDownElement}</NavLink>
+                        <ul className={style.sub_menu_wrapper}>
+                            <li>
+                                <NavLink activeClassName={style.active_link} className={style.sub_link}
+                                         to={'/feature0'}>Feature 0</NavLink>
+                            </li>
+
+                            {/*<li>*/}
+                            {/*    <NavLink activeClassName={style.active_link} className={style.sub_link}*/}
+                            {/*             to={'/feature_1'}>Feature 1</NavLink>*/}
+                            {/*</li>*/}
+                            {/*<li>*/}
+                            {/*    <NavLink activeClassName={style.active_link} className={style.sub_link}*/}
+                            {/*             to={'/feature_2'}>Feature 2</NavLink>*/}
+                            {/*</li>*/}
+
+                        </ul>
+
+                    </li>
+
+
+                    <li>
+                        <NavLink activeClassName={style.active_link} className={style.link}
+                                 to={'/settings'}>Settings {arrowDownElement}</NavLink>
+                        <ul className={style.sub_menu_wrapper}>
+                            <li>
+                                <NavLink activeClassName={style.active_link} className={style.sub_link}
+                                         to={'/password_restore'}>Restore</NavLink>
+                            </li>
+
+                            <li>
+                                <NavLink activeClassName={style.active_link} className={style.sub_link}
+                                         to={'/new_password'}>New password</NavLink>
+                            </li>
+
+                        </ul>
+                    </li>
+
+                    <li>
+                        <NavLink activeClassName={style.active_link} className={style.link} to={'/login'}>Log
+                            In</NavLink>
                     </li>
                     <li>
-                        <NavLink activeClassName={style.active_link} className={style.link} to={'/features'}>Features</NavLink>
+                        <NavLink activeClassName={style.active_link} className={style.link}
+                                 to={'/register'}>Register</NavLink>
                     </li>
-                    <li>
-                        <NavLink activeClassName={style.active_link} className={style.link} to={'/login'}>Log In</NavLink>
-                    </li>
-                    <li>
-                        <NavLink activeClassName={style.active_link} className={style.link} to={'/register'}>Register</NavLink>
-                    </li>
+
 
                 </ul>
 
@@ -50,22 +122,70 @@ const Header = () => {
 
             </div>
 
+
             <ul className={style.vertical_navbar} style={!isToggleCollapsed ? {'opacity': '1'} : {'opacity': '0'}}>
                 <li>
                     <NavLink activeClassName={style.active_link} className={style.link} to={'/home'}>Home</NavLink>
                 </li>
+
                 <li>
-                    <NavLink activeClassName={style.active_link} className={style.link} to={'/profile'}>Profile</NavLink>
+                    <NavLink activeClassName={style.active_link} className={style.link}
+                             to={'/profile'}>Profile</NavLink>
                 </li>
-                <li>
-                    <NavLink activeClassName={style.active_link} className={style.link} to={'/features'}>Features</NavLink>
+
+                <li onClick={onExpandFeaturesSubMenu} onBlur={onBlurFeaturesSubMenu}>
+                    <NavLink activeClassName={style.active_link} className={style.link}
+                             to={'/features'}>Features {arrowDownElement}</NavLink>
+
+                    <ul className={style.features_vertical_sub_menu_wrapper}
+                        style={isFeaturesSubMenuExpanded ? {'visibility': 'visible'} : {'visibility': 'hidden'}}>
+                        <li>
+                            <NavLink activeClassName={style.active_link} className={style.sub_link}
+                                     to={'/feature0'}>Feature 0</NavLink>
+                        </li>
+
+                        {/*<li>*/}
+                        {/*    <NavLink activeClassName={style.active_link} className={style.sub_link}*/}
+                        {/*             to={'/feature_1'}>Feature 1</NavLink>*/}
+                        {/*</li>*/}
+                        {/*<li>*/}
+                        {/*    <NavLink activeClassName={style.active_link} className={style.sub_link}*/}
+                        {/*             to={'/feature_2'}>Feature 2</NavLink>*/}
+                        {/*</li>*/}
+
+                    </ul>
                 </li>
+
+
+                <li onClick={onExpandSettingsSubMenu} onBlur={onBlurSettingsSubMenu}>
+                    <NavLink activeClassName={style.active_link} className={style.link}
+                             to={'/settings'}>Settings {arrowDownElement}</NavLink>
+
+
+                    <ul className={style.settings_vertical_sub_menu_wrapper}
+                        style={isSettingsSubMenuExpanded ? {'visibility': 'visible'} : {'visibility': 'hidden'}}>
+                        <li>
+                            <NavLink activeClassName={style.active_link} className={style.sub_link}
+                                     to={'/password_restore'}>Restore</NavLink>
+                        </li>
+
+                        <li>
+                            <NavLink activeClassName={style.active_link} className={style.sub_link}
+                                     to={'/new_password'}>New password</NavLink>
+                        </li>
+
+                    </ul>
+
+                </li>
+
                 <li>
                     <NavLink activeClassName={style.active_link} className={style.link} to={'/login'}>Log In</NavLink>
                 </li>
                 <li>
-                    <NavLink activeClassName={style.active_link} className={style.link} to={'/register'}>Register</NavLink>
+                    <NavLink activeClassName={style.active_link} className={style.link}
+                             to={'/register'}>Register</NavLink>
                 </li>
+
 
             </ul>
 

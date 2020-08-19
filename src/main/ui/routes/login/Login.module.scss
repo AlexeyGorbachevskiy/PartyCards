@@ -1,0 +1,9 @@
+
+@import "../../../../styles/sass/mixins";
+
+.login{
+    height: 100%;
+    width: 100%;
+    color: #F0F0F0;
+    @include flex;
+}

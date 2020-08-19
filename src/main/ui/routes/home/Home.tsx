@@ -1,5 +1,5 @@
 import React from 'react';
-import style from './home.module.scss'
+import style from './Home.module.scss'
 import Particles from 'react-particles-js';
 
 
@@ -133,7 +133,9 @@ const particlesOptions: any = {
 }
 
 
+
 const Home = () => {
+
     return (
         <div className={style.home}>
             <Particles className={style.particles} params={particlesOptions}/>

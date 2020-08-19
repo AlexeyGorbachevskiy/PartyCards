@@ -1,0 +1,35 @@
+@import '../../styles/sass/mixins';
+
+.feature0 {
+
+  height: 100%;
+  width: 100%;
+  @include flex;
+  flex-direction: column;
+
+  & h2{
+    margin-bottom: 5%;
+    color: #F0F0F0;
+  }
+
+
+
+  .common{
+    width: 100%;
+    @include flex;
+    flex-wrap: wrap;
+    .input_wrapper{
+      margin-left: 5%;
+    }
+
+    .btn_wrapper {
+      margin-left: 5%;
+    }
+
+    .checkbox_wrapper{
+
+    }
+  }
+
+}
+

@@ -1,0 +1,29 @@
+
+@import '../../../../styles/sass/variables';
+
+.input {
+  position: relative;
+  box-sizing: border-box;
+  outline: none;
+  background-color: transparent;
+  box-shadow: none !important;
+  //border: 1px solid #31383d;
+  border: 1px solid #ffffff;;
+  border-radius: 0;
+  height: 40px;
+  transition: all 0.5s;
+  padding: .9em 1em;
+  color: #F0F0F0;
+  font-size: 1em;
+  font-family: 'Open Sans', sans-serif;
+  display: block;
+  width: 200px;
+  font-weight: 400;
+  line-height: 1.5;
+  overflow: visible;
+
+  &:focus{
+    border-color: $mainColor;
+  }
+
+}
