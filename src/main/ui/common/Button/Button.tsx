@@ -15,7 +15,7 @@ type ButtonPropsType=DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivEl
 const Button = (props: ButtonPropsType) => {
 
     return (
-        <div {...props} className={style.container}>
+        <div className={style.container} {...props}>
             <p>{props.children}</p>
         </div>
     );

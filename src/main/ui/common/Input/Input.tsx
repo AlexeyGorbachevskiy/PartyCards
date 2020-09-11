@@ -22,10 +22,10 @@ const Input = (propsI: InputPropsType) => {
     }
     return (
             <input
-                {...propsI}
                 onKeyPress={onEnterCallback}
                 className={style.input}
                 type={'text'}
+                {...propsI}
             />
     );
 }

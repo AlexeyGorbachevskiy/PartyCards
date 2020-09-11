@@ -1,9 +1,10 @@
-import {combineReducers, createStore} from 'redux';
+import {applyMiddleware, combineReducers, createStore} from 'redux';
 import {loginReducer} from "./loginReducer";
 import {registerReducer} from "./registerReducer";
 import {passwordRestoreReducer} from "./passwordRestoreReducer";
 import {newPasswordReducer} from "./newPasswordReducer";
 import {profileReducer} from "./profileReducer";
+import thunk from "redux-thunk";
 
 
 export type AppRootType = ReturnType<typeof rootReducer>
@@ -17,7 +18,5 @@ const rootReducer = combineReducers({
 })
 
 
-
-
-export const store = createStore(rootReducer);
+export const store = createStore(rootReducer, applyMiddleware(thunk));
 

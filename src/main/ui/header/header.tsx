@@ -123,7 +123,7 @@ const Header = () => {
             </div>
 
 
-            <ul className={style.vertical_navbar} style={!isToggleCollapsed ? {'visibility': 'visible','opacity':'1'} : {'visibility': 'hidden','opacity':'0'}}>
+            <ul className={style.vertical_navbar} style={!isToggleCollapsed ? {'visibility': 'visible','opacity':'1','zIndex':1001} : {'visibility': 'hidden','opacity':'0'}}>
                 <li>
                     <NavLink activeClassName={style.active_link} className={style.link} to={'/home'}>Home</NavLink>
                 </li>
