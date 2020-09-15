@@ -15,6 +15,8 @@ import Features from "./main/ui/routes/features/Features";
 import Feature0 from "./features/f0-test/Feature0";
 
 const App = () => {
+
+
     return (
         <div className="App">
             <HashRouter>
@@ -31,6 +33,7 @@ const App = () => {
                     <Route path='/password_restore' render={() => <PasswordRestore/>}/>
                     <Route path='/features' render={() => <Features/>}/>
                     <Route path='/feature0' render={() => <Feature0/>}/>
+
 
                 </Provider>
             </HashRouter>

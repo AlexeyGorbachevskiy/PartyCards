@@ -18,7 +18,7 @@ type LoginResponseType = {}
 export const loginAPI = {
     login(email: string, password: string, remember: boolean) {
         return (
-            axiosInstance.post<any>(`auth/login`, {email, password, remember})
+            axiosInstance.post(`auth/login`, {email, password, remember})
         )
     },
 }
