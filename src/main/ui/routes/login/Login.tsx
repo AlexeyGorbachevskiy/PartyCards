@@ -1,12 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import style from './Login.module.scss'
-import Input from "../../common/Input/Input";
-import Checkbox from "../../common/Checkbox/Checkbox";
-import Button from "../../common/Button/Button";
+import Input from "../../common/input/Input";
+import Checkbox from "../../common/checkbox/Checkbox";
+import Button from "../../common/button/Button";
 import {useDispatch, useSelector} from "react-redux";
 import {loginThunkCreator} from "../../../bll/state/loginReducer";
 import {AppRootType} from "../../../bll/state/store";
 import {Redirect} from "react-router-dom";
+import Preloader from "../../common/preloader/Preloader";
 
 
 const Login = () => {
@@ -17,13 +18,16 @@ const Login = () => {
     const dispatch = useDispatch();
 
     const stateError = useSelector<AppRootType, string>(state => state.login.error)
-    const stateEmail = useSelector<AppRootType, string>(state => state.login.email)
+    // const stateEmail = useSelector<AppRootType, string>(state => state.login.email)
+    const isAuth = useSelector<AppRootType, boolean>(state => state.auth.isAuth);
+    const isLoading = useSelector<AppRootType, boolean>(state => state.login.isLoading);
 
     const onLogin = () => {
         dispatch(loginThunkCreator(email, password, remember));
     }
 
     const [errorStyle, setErrorStyle] = useState({})
+
 
     useEffect(() => {
         setEmail('');
@@ -37,18 +41,33 @@ const Login = () => {
             setErrorStyle({})
         }
 
+    }, [stateError])
 
-    }, [stateError, stateEmail])
-
-
-    if (stateEmail) {
-        return <Redirect to="/home"/>;
+    if (isLoading) {
+        return(
+            <div className="App">
+                <Preloader/>
+            </div>
+        )
     }
+
+    if (isAuth) {
+        return <Redirect to="/profile"/>;
+    }
+
+
 
     return (
         <div className={style.login}>
             <div className={style.login_form}>
                 <h2>Login</h2>
+
+                <div className={style.credentials}>
+                    <p> Use Email: "nya-admin@nya.nya" </p>
+
+                    <p> Password: "1qazxcvBG"</p>
+                </div>
+
                 <div className={style.form}>
                     <Input style={errorStyle} onChange={(e) => {
                         setEmail(e.currentTarget.value)
@@ -78,6 +97,7 @@ const Login = () => {
                 <p className={style.error}>{stateError}</p>
 
                 <Button onClick={onLogin} style={{width: '150px'}}>Log In</Button>
+
             </div>
         </div>
     )

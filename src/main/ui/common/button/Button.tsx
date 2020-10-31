@@ -1,6 +1,5 @@
-import React, {DetailedHTMLProps, ButtonHTMLAttributes, HTMLAttributes} from 'react';
+import React, {DetailedHTMLProps, HTMLAttributes} from 'react';
 import style from './Button.module.scss'
-
 
 
 //

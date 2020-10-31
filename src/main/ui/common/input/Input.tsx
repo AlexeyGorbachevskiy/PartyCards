@@ -1,4 +1,4 @@
-import React, {DetailedHTMLProps, InputHTMLAttributes,KeyboardEvent} from 'react';
+import React, {DetailedHTMLProps, InputHTMLAttributes, KeyboardEvent} from 'react';
 import style from './Input.module.scss'
 
 // type InputPropsType={

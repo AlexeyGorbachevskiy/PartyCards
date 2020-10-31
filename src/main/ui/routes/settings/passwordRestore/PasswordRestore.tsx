@@ -1,9 +1,10 @@
 import React from 'react';
 import style from './PasswordRestore.module.scss'
+import {compose} from "redux";
+import {withAuthRedirect} from "../../../../utilities/hoc/withAuthRedirect";
 
 
 const PasswordRestore=()=>{
-
 
 
     return (
@@ -13,4 +14,6 @@ const PasswordRestore=()=>{
     )
 }
 
-export default PasswordRestore;
+export default compose(
+    withAuthRedirect,
+)(PasswordRestore)

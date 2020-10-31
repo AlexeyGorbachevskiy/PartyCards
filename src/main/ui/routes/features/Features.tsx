@@ -1,9 +1,11 @@
 import React from 'react';
 import style from './Features.module.scss'
+import {compose} from "redux";
+import {withAuthRedirect} from "../../../utilities/hoc/withAuthRedirect";
 
 
+const Features = () => {
 
-const Features=()=>{
 
     return (
         <div className={style.features}>
@@ -12,4 +14,6 @@ const Features=()=>{
     )
 }
 
-export default Features;
+export default compose(
+    withAuthRedirect,
+)(Features)
