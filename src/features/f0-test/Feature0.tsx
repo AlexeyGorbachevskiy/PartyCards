@@ -1,10 +1,13 @@
 import React, {ChangeEvent, useState} from 'react';
 import style from './Feature0.module.scss'
-import Button from "../../main/ui/common/Button/Button";
-import Input from "../../main/ui/common/Input/Input";
-import Checkbox from "../../main/ui/common/Checkbox/Checkbox";
+import Button from "../../main/ui/common/button/Button";
+import Input from "../../main/ui/common/input/Input";
+import Checkbox from "../../main/ui/common/checkbox/Checkbox";
+import {compose} from "redux";
+import {withAuthRedirect} from "../../main/utilities/hoc/withAuthRedirect";
 
 const Feature0 = () => {
+
     const [checkboxValue, setCheckboxValue] = useState(false);
     const onCheckboxClick = () => {
         setCheckboxValue(!checkboxValue);
@@ -40,4 +43,6 @@ const Feature0 = () => {
     )
 }
 
-export default Feature0;
+export default compose(
+    withAuthRedirect,
+)(Feature0)

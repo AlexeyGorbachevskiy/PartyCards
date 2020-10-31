@@ -3,6 +3,10 @@ import style from './header.module.scss'
 import {NavLink} from "react-router-dom";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faAngleDown} from '@fortawesome/free-solid-svg-icons'
+import {useDispatch, useSelector} from "react-redux";
+import {AppRootType} from "../../bll/state/store";
+import {logoutThunkCreator} from "../../bll/state/loginReducer";
+import Preloader from "../common/preloader/Preloader";
 
 const arrowDownElement = <FontAwesomeIcon className={style.arrow_down} icon={faAngleDown}/>
 
@@ -10,9 +14,16 @@ const arrowDownElement = <FontAwesomeIcon className={style.arrow_down} icon={faA
 const Header = () => {
 
     const [isToggleCollapsed, setToggleCollapsed] = useState<boolean>(true);
-
     const [isFeaturesSubMenuExpanded, setFeaturesSubMenuExpanded] = useState<boolean>(false);
     const [isSettingsSubMenuExpanded, setSettingsSubMenuExpanded] = useState<boolean>(false);
+
+    let isAuth = useSelector<AppRootType, boolean>(state => state.auth.isAuth);
+    const isLoading = useSelector<AppRootType, boolean>(state => state.login.isLoading);
+    const dispatch = useDispatch();
+
+    const logout = () => {
+        dispatch(logoutThunkCreator())
+    }
 
     const onToggleMenu = () => {
         setToggleCollapsed(!isToggleCollapsed);
@@ -38,6 +49,14 @@ const Header = () => {
     }
     const onBlurSettingsSubMenu = () => {
         setSettingsSubMenuExpanded(false)
+    }
+
+    if (isLoading) {
+        return (
+            <div className="App">
+                <Preloader/>
+            </div>
+        )
     }
 
 
@@ -103,13 +122,25 @@ const Header = () => {
                     </li>
 
                     <li>
-                        <NavLink activeClassName={style.active_link} className={style.link} to={'/login'}>Log
-                            In</NavLink>
-                    </li>
-                    <li>
                         <NavLink activeClassName={style.active_link} className={style.link}
                                  to={'/register'}>Register</NavLink>
                     </li>
+
+                    {
+                        isAuth ?
+                            <li>
+                                <NavLink onClick={logout}
+                                         className={style.logout + ' ' + style.link}
+                                         to={'#'}>Log Out
+                                </NavLink>
+                            </li>
+                            :
+                            <li>
+                                <NavLink activeClassName={style.active_link} className={style.link}
+                                         to={'/login'}>Log In
+                                </NavLink>
+                            </li>
+                    }
 
 
                 </ul>
@@ -123,7 +154,11 @@ const Header = () => {
             </div>
 
 
-            <ul className={style.vertical_navbar} style={!isToggleCollapsed ? {'visibility': 'visible','opacity':'1'} : {'visibility': 'hidden','opacity':'0'}}>
+            <ul className={style.vertical_navbar} style={!isToggleCollapsed ? {
+                'visibility': 'visible',
+                'opacity': '1',
+                'zIndex': 1001
+            } : {'visibility': 'hidden', 'opacity': '0'}}>
                 <li>
                     <NavLink activeClassName={style.active_link} className={style.link} to={'/home'}>Home</NavLink>
                 </li>
@@ -178,13 +213,25 @@ const Header = () => {
 
                 </li>
 
-                <li>
-                    <NavLink activeClassName={style.active_link} className={style.link} to={'/login'}>Log In</NavLink>
-                </li>
+
                 <li>
                     <NavLink activeClassName={style.active_link} className={style.link}
                              to={'/register'}>Register</NavLink>
                 </li>
+
+                {
+                    isAuth ?
+                        <li>
+                            <NavLink className={style.logout + ' ' + style.link}
+                                     to={'#'}>Log
+                                Out</NavLink>
+                        </li>
+                        :
+                        <li>
+                            <NavLink activeClassName={style.active_link} className={style.link} to={'/login'}>Log
+                                In</NavLink>
+                        </li>
+                }
 
 
             </ul>

@@ -12,9 +12,9 @@ const Checkbox = (props: CheckboxPropsType) => {
     return (
         <label className={style.label}>
             <input
-                {...props}
                 className={style.checkbox}
                 type={'checkbox'}
+                {...props}
             />
             <span> {props.labelText}</span>
         </label>

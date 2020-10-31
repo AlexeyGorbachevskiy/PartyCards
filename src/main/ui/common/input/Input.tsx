@@ -1,4 +1,4 @@
-import React, {DetailedHTMLProps, InputHTMLAttributes,KeyboardEvent} from 'react';
+import React, {DetailedHTMLProps, InputHTMLAttributes, KeyboardEvent} from 'react';
 import style from './Input.module.scss'
 
 // type InputPropsType={
@@ -22,10 +22,10 @@ const Input = (propsI: InputPropsType) => {
     }
     return (
             <input
-                {...propsI}
                 onKeyPress={onEnterCallback}
                 className={style.input}
                 type={'text'}
+                {...propsI}
             />
     );
 }
