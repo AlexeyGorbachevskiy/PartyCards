@@ -1,10 +1,11 @@
 import axios from "axios";
+import {registerFieldsType} from "../bll/state/registerReducer";
 
 
 const axiosInstance = axios.create(
     {
-        // baseURL: 'https://neko-back.herokuapp.com/2.0/',
-        baseURL: 'http://localhost:7542/2.0/',
+        baseURL: 'https://neko-back.herokuapp.com/2.0/',
+        // baseURL: 'http://localhost:7542/2.0/',
         withCredentials: true,
         // headers: {'API-KEY': '0b2bdd80-32f2-11ea-aa6d-ebd61add4aaa'}
     },
@@ -37,4 +38,12 @@ export const authAPI = {
     }
 }
 
+
+export const registerAPI = {
+    register(values:registerFieldsType){
+        return (
+            axiosInstance.post('auth/register',values)
+        )
+    }
+}
 

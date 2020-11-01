@@ -14,6 +14,7 @@
 
   width: 100%;
   padding: 17px 0;
+  background-color: #1e2326;
 
 
   .container {
@@ -155,7 +156,7 @@
       .sub_menu_wrapper {
         visibility: hidden;
         position: absolute;
-        transition: all 0.5s ease-in-out;
+        transition: all 0.3s ease-in-out;
         //background-color: #1e2326;
         width: 100%;
         color: #ffffff;
@@ -172,7 +173,7 @@
           .sub_link {
             text-decoration: none;
             color: #ffffff;
-            transition: all 0.5s ease-in-out;
+            transition: all 0.3s ease-in-out;
             font-size: .9em;
 
             &:hover {
@@ -270,7 +271,7 @@
   }
 
   .vertical_navbar {
-    position: relative;
+    position: fixed;
     transition: all 0.7s ease-in-out;
     //background-color: #1e2326;
     background-color: #1f4258;
@@ -284,8 +285,10 @@
     align-items: flex-start;
     padding: 0 15px;
 
+    z-index: 1001;
     @media (max-width: 992px) {
-      margin: 0 6%;
+      //margin: 0 6%;
+      margin: 0 8%;
     }
     @media (min-width: 992px) {
       display: none;
@@ -306,7 +309,6 @@
         display: block;
         position: relative;
         background-color: transparent;
-
         &:hover, &:active {
           color: $mainColor;
         }
@@ -323,7 +325,7 @@
         z-index: 1000;
         top: 0;
         left: 100%;
-        transition: all 0.5s ease-in-out;
+        transition: all 0.3s ease-in-out;
         width: 100%;
         color: #ffffff;
         margin-top: 10%;
@@ -332,12 +334,14 @@
 
         & li {
           @include flex();
+          background-color: #1f4258;
 
           .sub_link {
             text-decoration: none;
             color: #ffffff;
-            transition: all 0.5s ease-in-out;
+            transition: all 0.3s ease-in-out;
             font-size: .9em;
+
 
             &:hover {
               color: $mainColor;
@@ -356,20 +360,25 @@
         z-index: 1000;
         top: 0;
         left: 100%;
-        transition: all 0.5s ease-in-out;
+        transition: all 0.3s ease-in-out;
         width: 100%;
         color: #ffffff;
         margin-top: 10%;
         display: block !important;
         @include flex();
+        background-color: #1f4258;
 
         & li {
           @include flex();
 
+          &:not(:last-of-type){
+            border-bottom: 1px solid white;
+          }
+
           .sub_link {
             text-decoration: none;
             color: #ffffff;
-            transition: all 0.5s ease-in-out;
+            transition: all 0.3s ease-in-out;
             font-size: .9em;
 
             &:hover {
