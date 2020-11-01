@@ -21,6 +21,7 @@ const Login = () => {
     // const stateEmail = useSelector<AppRootType, string>(state => state.login.email)
     const isAuth = useSelector<AppRootType, boolean>(state => state.auth.isAuth);
     const isLoading = useSelector<AppRootType, boolean>(state => state.login.isLoading);
+    const registerStatus = useSelector<AppRootType, number>(state => state.register.status)
 
     const onLogin = () => {
         dispatch(loginThunkCreator(email, password, remember));
@@ -44,7 +45,7 @@ const Login = () => {
     }, [stateError])
 
     if (isLoading) {
-        return(
+        return (
             <div className="App">
                 <Preloader/>
             </div>
@@ -56,11 +57,15 @@ const Login = () => {
     }
 
 
-
     return (
         <div className={style.login}>
+
             <div className={style.login_form}>
-                <h2>Login</h2>
+                <h2>Log In</h2>
+
+                {registerStatus===201  ?
+                    <p style={{color: 'green', fontSize: '18px', textAlign: 'center'}}>You are successfully registered. Now
+                        you need to login.</p> : ''}
 
                 <div className={style.credentials}>
                     <p> Use Email: "nya-admin@nya.nya" </p>
@@ -93,12 +98,12 @@ const Login = () => {
                             }}/> Remember Me?
                     </label>
                 </div>
-
                 <p className={style.error}>{stateError}</p>
 
                 <Button onClick={onLogin} style={{width: '150px'}}>Log In</Button>
 
             </div>
+
         </div>
     )
 }

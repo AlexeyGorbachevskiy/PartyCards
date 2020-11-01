@@ -1,9 +1,80 @@
-
 @import "../../../../styles/sass/mixins";
+@import '../../../../styles/sass/variables';
 
 .register{
     height: 100%;
     width: 100%;
     color: #F0F0F0;
     @include flex;
+
+    .register_form {
+        position: relative;
+        //z-index: 1000;
+        margin-top: 30px;
+        width: 450px;
+        height: 450px;
+        border: 1px solid #f07f81;
+        @include flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+
+        @media screen and (max-height: 560px) {
+            height: 300px;
+        }
+        @media screen and (max-width: 490px) {
+            width: 300px;
+            height: 300px;
+        }
+        h2 {
+            font-size: 28px;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+
+        .form{
+
+            .input{
+                box-sizing: border-box;
+                outline: none;
+                background-color: transparent;
+                box-shadow: none !important;
+                //border: 1px solid #31383d;
+                border: 1px solid #ffffff;;
+                border-radius: 0;
+                height: 40px;
+                transition: all 0.5s;
+                padding: .9em 1em;
+                color: #F0F0F0;
+                font-size: 1em;
+                font-family: 'Open Sans', sans-serif;
+                display: block;
+                width: 250px;
+                font-weight: 400;
+                line-height: 1.5;
+                overflow: visible;
+
+                &:focus{
+                    border-color: $mainColor;
+                }
+
+                margin: 20px 0;
+            }
+
+            .email{
+                @media screen and (max-width: 490px) {
+                    width: 220px;
+                }
+            }
+            .password{
+                @media screen and (max-width: 490px) {
+                    width: 220px;
+                }
+
+            }
+
+
+        }
+
+
+    }
 }

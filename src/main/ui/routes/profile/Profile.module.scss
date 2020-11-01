@@ -1,9 +1,59 @@
-
 @import "../../../../styles/sass/mixins";
 
-.profile{
+.profile {
+  padding-top: 78px;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  //grid-template-rows: 1fr 1.5fr;
+
+
+  color: #F0F0F0;
+  background-color: #f07f81;
+
+
+  .profile_info {
     height: 100%;
-    width: 100%;
-    color: #F0F0F0;
+    background-color: darkcyan;
+    word-break: break-word;
+
     @include flex;
+    flex-direction: column;
+    justify-content: flex-start;
+
+
+    .profile_info_header {
+      margin: 5% 0;
+      padding: 5% 0;
+      width: 100%;
+      background-color: green;
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+
+
+      .avatar {
+        margin: 0 20%;
+      }
+
+      .profile_info_header_content{
+
+
+
+
+      }
+
+
+    }
+
+  }
+
+  .profile_settings {
+    padding: 5% 0;
+    height: 100%;
+    @include flex;
+    flex-direction: column;
+
+    word-break: break-word;
+  }
+
 }

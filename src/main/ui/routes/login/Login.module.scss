@@ -6,6 +6,7 @@
   width: 100%;
   color: #F0F0F0;
   @include flex;
+  flex-direction: column;
 
   .login_form {
     position: relative;
