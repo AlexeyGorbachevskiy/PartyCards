@@ -7,10 +7,11 @@ type initialStateType = typeof initialState
 
 
 let initialState = {
+    isCurrentPageProfile: false,
     initialized: false
 }
 
-export type AppReducerActionTypes = InitializedSuccessACType
+export type AppReducerActionTypes = InitializedSuccessACType | SetIsCurrentPageProfileACType
 const appReducer = (state: initialStateType = initialState, action: AppReducerActionTypes): initialStateType => {
 
     switch (action.type) {
@@ -22,20 +23,39 @@ const appReducer = (state: initialStateType = initialState, action: AppReducerAc
             }
         }
 
+        case SET_PROFILE_AS_CURRENT_PAGE:{
+            return {
+                ...state,
+                isCurrentPageProfile: action.isCurrentPge
+
+            }
+        }
+
         default:
             return state
     }
 }
 
 
+
+const INITIALIZED_SUCCESS = 'INITIALIZED_SUCCESS';
+const SET_PROFILE_AS_CURRENT_PAGE = 'SET_PROFILE_AS_CURRENT_PAGE';
+
 export type InitializedSuccessACType = {
     type: typeof INITIALIZED_SUCCESS
 }
-const INITIALIZED_SUCCESS = 'INITIALIZED_SUCCESS';
+export type SetIsCurrentPageProfileACType = {
+    type: typeof SET_PROFILE_AS_CURRENT_PAGE,
+    isCurrentPge: boolean
+}
 
 
 export const initializedSuccessAC = (): InitializedSuccessACType => ({
     type: INITIALIZED_SUCCESS
+});
+
+export const setIsCurrentPageProfileAC = (isCurrentPge:boolean): SetIsCurrentPageProfileACType => ({
+    type: SET_PROFILE_AS_CURRENT_PAGE, isCurrentPge
 });
 
 

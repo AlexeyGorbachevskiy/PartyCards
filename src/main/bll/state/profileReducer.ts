@@ -1,20 +1,25 @@
-
-
-// export let smth = v1();
+import {Dispatch} from "redux";
+import {profileAPI} from "../../dal/API";
+import {setLoadingAC, SetLoadingACType} from "./loginReducer";
 
 type initialStateType = typeof initialState
-const initialState= {fullName:'Alexey Gorbachevskiy'}
+const initialState = {
+    name: '',
+    avatar: '',
+}
 
 
+type ActionTypes = SetProfileInfoACType
 
-
-type ActionTypes = SetSmthActionType
-
-export const profileReducer = (state: initialStateType = initialState, action: ActionTypes): initialStateType=> {
+export const profileReducer = (state: initialStateType = initialState, action: ActionTypes): initialStateType => {
     switch (action.type) {
 
-        case SET_SMTH: {
-            return {...state}
+        case SAVE_PROFILE_INFO: {
+            return {
+                ...state,
+                name: action.name,
+                avatar: action.avatar,
+            }
         }
 
         default: {
@@ -23,15 +28,40 @@ export const profileReducer = (state: initialStateType = initialState, action: A
     }
 }
 
-const SET_SMTH='SET_SMTH'
+const SAVE_PROFILE_INFO = 'SAVE_PROFILE_INFO'
 
-export type SetSmthActionType = {
-    type: typeof SET_SMTH,
-    smth: string
+export type SetProfileInfoACType = {
+    type: typeof SAVE_PROFILE_INFO,
+    name: string,
+    avatar:string
 }
 
-export const profileAC = (smth: string): SetSmthActionType => {
-    return {type: 'SET_SMTH', smth: smth}
+export const saveProfileInfoAC = (name: string, avatar:string): SetProfileInfoACType => {
+    return {type: 'SAVE_PROFILE_INFO', name, avatar}
+}
+
+export const changeInfoThunkCreator = (name:string, avatar:string) => {
+    return (
+        (dispatch: Dispatch<ActionTypes | SetLoadingACType>) => {
+
+            // loader appears
+            dispatch(setLoadingAC(true))
+
+            profileAPI.changeInfo(name, avatar)
+                .then((res) => {
+                    saveProfileInfoAC(res.data.name,res.data.avatar)
+                    dispatch(setLoadingAC(false))
+
+                })
+                .catch((e) => {
+                    // const error = e.response ? e.response.data.error : (e.message + 'more details in console')
+
+                    console.log('Error', e)
+
+                    dispatch(setLoadingAC(false))
+                })
+        }
+    )
 }
 
 

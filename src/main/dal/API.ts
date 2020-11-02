@@ -47,3 +47,11 @@ export const registerAPI = {
     }
 }
 
+export const profileAPI = {
+    changeInfo(name:string, avatar:string){
+        return (
+            axiosInstance.put('auth/me',{name, avatar})
+        )
+    }
+}
+
