@@ -31,7 +31,7 @@ const App = () => {
     const initialized = useSelector<AppRootType, boolean>(state => state.app.initialized);
     if (!initialized) {
         return(
-            <div className="App">
+            <div className="App" style={{display:'flex', justifyContent:'center',alignItems:'center'}}>
                 <Preloader/>
             </div>
         )

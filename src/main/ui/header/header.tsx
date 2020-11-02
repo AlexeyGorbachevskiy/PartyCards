@@ -13,6 +13,9 @@ const arrowDownElement = <FontAwesomeIcon className={style.arrow_down} icon={faA
 
 const Header = () => {
 
+    //for header background color
+    const isCurrentPageProfile=useSelector<AppRootType,boolean>(state=>state.app.isCurrentPageProfile)
+
     const [isToggleCollapsed, setToggleCollapsed] = useState<boolean>(true);
     const [isFeaturesSubMenuExpanded, setFeaturesSubMenuExpanded] = useState<boolean>(false);
     const [isSettingsSubMenuExpanded, setSettingsSubMenuExpanded] = useState<boolean>(false);
@@ -51,17 +54,17 @@ const Header = () => {
         setSettingsSubMenuExpanded(false)
     }
 
-    if (isLoading) {
-        return (
-            <div className="App">
-                <Preloader/>
-            </div>
-        )
-    }
+    // if (isLoading) {
+    //     return (
+    //         <div className="App">
+    //             <Preloader/>
+    //         </div>
+    //     )
+    // }
 
 
     return (
-        <div className={style.header}>
+        <div className={style.header} style={isCurrentPageProfile ? {backgroundColor:'#1e2326'} : {backgroundColor:'transparent'}}>
             <div className={style.container}
                  style={!isToggleCollapsed ? {'backgroundColor': '#1e2326'} : {'backgroundColor': 'transparent'}}>
 

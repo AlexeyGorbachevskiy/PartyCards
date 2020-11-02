@@ -4,7 +4,12 @@
 import {Dispatch} from "redux";
 import {loginAPI} from "../../dal/API";
 import {AuthDataACResponseType, setAuthDataAC} from "./authReducer";
-import {setRegisterStatusAC, SetRegisterStatusACType} from "./registerReducer";
+import {
+    setRegisterErrorAC,
+    SetRegisterErrorACType,
+    setRegisterStatusAC,
+    SetRegisterStatusACType
+} from "./registerReducer";
 
 export type initialStateType = typeof initialState
 const initialState = {
@@ -108,7 +113,7 @@ export const setLoadingAC = (isLoading: boolean): SetLoadingACType => {
 
 export const loginThunkCreator = (email: string, password: string, remember: boolean) => {
     return (
-        (dispatch: Dispatch<ActionTypes | AuthDataACResponseType | SetRegisterStatusACType>) => {
+        (dispatch: Dispatch<ActionTypes | AuthDataACResponseType | SetRegisterStatusACType | SetRegisterErrorACType>) => {
 
             // loader appears
             dispatch(setLoadingAC(true))
@@ -120,6 +125,7 @@ export const loginThunkCreator = (email: string, password: string, remember: boo
                     dispatch(setLoginDataAC(res.data))
                     dispatch(setAuthDataAC(true))
                     dispatch(setRegisterStatusAC(0))
+                    dispatch(setRegisterErrorAC(''))
 
                     dispatch(setLoadingAC(false))
 
