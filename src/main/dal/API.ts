@@ -4,6 +4,7 @@ import {registerFieldsType} from "../bll/state/registerReducer";
 
 const axiosInstance = axios.create(
     {
+        // TODO Change before every deploy
         baseURL: 'https://neko-back.herokuapp.com/2.0/',
         // baseURL: 'http://localhost:7542/2.0/',
         withCredentials: true,
@@ -14,7 +15,6 @@ const axiosInstance = axios.create(
 
 type LoginResponseType = {}
 
-//TODO: test (admin) credentials
 // email: "nya-admin@nya.nya"
 // password: "1qazxcvBG"
 export const loginAPI = {
@@ -31,26 +31,50 @@ export const loginAPI = {
 }
 
 export const authAPI = {
-    auth(){
+    auth() {
         return (
-            axiosInstance.post('auth/me',{})
+            axiosInstance.post('auth/me', {})
         )
     }
 }
 
 
 export const registerAPI = {
-    register(values:registerFieldsType){
+    register(values: registerFieldsType) {
         return (
-            axiosInstance.post('auth/register',values)
+            axiosInstance.post('auth/register', values)
         )
     }
 }
 
 export const profileAPI = {
-    changeInfo(name:string, avatar:string){
+    changeInfo(name: string, avatar: string) {
         return (
-            axiosInstance.put('auth/me',{name, avatar})
+            axiosInstance.put('auth/me', {name, avatar})
+        )
+    }
+}
+
+export const settingsAPI = {
+    restore(email: string) {
+        return (
+            axiosInstance.post('auth/forgot', {
+                email,
+                from: '<alexeygorbachevskiyy@gmail.com>',
+                message: `<div style="background-color: lime; padding:15px; font-size: 16px">
+Password recovery link: 
+<!--TODO Change before every deploy-->
+<a href="https://alexeygorbachevskiy.github.io/PartyCards/#/new_password/$token$">Link</a>
+<!--<a href="http://localhost:3000/PartyCards#/new_password/$token$">Link</a>-->
+</div>`
+            })
+        )
+    },
+
+    setNewPassword(password: string, token: string) {
+
+        return (
+            axiosInstance.post('auth/set-new-password', {password, resetPasswordToken: token})
         )
     }
 }

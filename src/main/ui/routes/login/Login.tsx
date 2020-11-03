@@ -4,10 +4,10 @@ import Input from "../../common/input/Input";
 import Checkbox from "../../common/checkbox/Checkbox";
 import Button from "../../common/button/Button";
 import {useDispatch, useSelector} from "react-redux";
-import {loginThunkCreator} from "../../../bll/state/loginReducer";
+import {loginThunkCreator, setLoginErrorAC} from "../../../bll/state/loginReducer";
 import {AppRootType} from "../../../bll/state/store";
 import {Redirect} from "react-router-dom";
-import Preloader from "../../common/preloader/Preloader";
+import obj from "../../common/preloader/Preloader.module.css";
 
 
 const Login = () => {
@@ -22,18 +22,31 @@ const Login = () => {
     const isAuth = useSelector<AppRootType, boolean>(state => state.auth.isAuth);
     const isLoading = useSelector<AppRootType, boolean>(state => state.login.isLoading);
     const registerStatus = useSelector<AppRootType, number>(state => state.register.status)
+    const newPasswordMessage = useSelector<AppRootType, string>(state => state.newPassword.mewPasswordMessage)
+    const newPasswordError = useSelector<AppRootType, string>(state => state.newPassword.newPasswordError)
 
     const onLogin = () => {
-        dispatch(loginThunkCreator(email, password, remember));
+        if (email.trim() === '' || password.trim() === '') {
+            dispatch(setLoginErrorAC('All fields should be filled'))
+        } else {
+            dispatch(setLoginErrorAC(''))
+            dispatch(loginThunkCreator(email, password, remember));
+        }
     }
 
     const [errorStyle, setErrorStyle] = useState({})
 
 
+    useEffect(()=>{
+        return ()=>{
+            setEmail('');
+            setPassword('');
+            setRemember(false);
+            dispatch(setLoginErrorAC(''))
+        }
+    },[])
+
     useEffect(() => {
-        setEmail('');
-        setPassword('');
-        setRemember(false);
         if (stateError) {
             setErrorStyle({
                 borderColor: '#cf0c0c',
@@ -44,13 +57,13 @@ const Login = () => {
 
     }, [stateError])
 
-    if (isLoading) {
-        return (
-            <div className="App" style={{display:'flex', justifyContent:'center',alignItems:'center'}}>
-                <Preloader/>
-            </div>
-        )
-    }
+    // if (isLoading) {
+    //     return (
+    //         <div className="App" style={{display:'flex', justifyContent:'center',alignItems:'center'}}>
+    //             <Preloader/>
+    //         </div>
+    //     )
+    // }
 
     if (isAuth) {
         return <Redirect to="/profile"/>;
@@ -63,15 +76,25 @@ const Login = () => {
             <div className={style.login_form}>
                 <h2>Log In</h2>
 
-                {registerStatus===201  ?
-                    <p style={{color: 'green', fontSize: '18px', textAlign: 'center'}}>You are successfully registered. Now
-                        you need to login.</p> : ''}
+                {
+                    registerStatus === 201 ?
+                        <p style={{color: 'green', fontSize: '18px', textAlign: 'center', maxWidth: '70%'}}>You are
+                            successfully
+                            registered. Now
+                            you need to login.</p> : ''
+                }
+                {
+                    newPasswordMessage && !newPasswordError ?
+                        <p style={{color: 'green', fontSize: '18px', textAlign: 'center', maxWidth: '70%'}}>
+                            Password was successfully changed. You need to log in now</p>
+                        : ''
+                }
 
-                <div className={style.credentials}>
-                    <p> Use Email: "nya-admin@nya.nya" </p>
+                {/*<div className={style.credentials}>*/}
+                {/*    <p>Email: "nya-admin@nya.nya" </p>*/}
 
-                    <p> Password: "1qazxcvBG"</p>
-                </div>
+                {/*    <p> Password: "1qazxcvBG"</p>*/}
+                {/*</div>*/}
 
                 <div className={style.form}>
                     <Input style={errorStyle} onChange={(e) => {
@@ -102,7 +125,13 @@ const Login = () => {
 
                 <Button onClick={onLogin} style={{width: '150px'}}>Log In</Button>
 
+
             </div>
+            {
+                isLoading &&
+                <img style={{position: 'absolute', zIndex: 1200}} className={obj.preloader}
+                     src={process.env.PUBLIC_URL + '/images/spinner.svg'} alt={'Preloader svg'}/>
+            }
 
         </div>
     )

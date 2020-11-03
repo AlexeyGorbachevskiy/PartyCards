@@ -8,6 +8,7 @@ import {withAuthRedirect} from "../../main/utilities/hoc/withAuthRedirect";
 
 const Feature0 = () => {
 
+
     const [checkboxValue, setCheckboxValue] = useState(false);
     const onCheckboxClick = () => {
         setCheckboxValue(!checkboxValue);
