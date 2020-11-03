@@ -7,7 +7,7 @@ import {setLoadingAC, SetLoadingACType} from "./loginReducer";
 
 type initialStateType = typeof initialState
 const initialState = {
-    error: '',
+    registerError: '',
     status: 0,
 }
 
@@ -26,7 +26,7 @@ export const registerReducer = (state: initialStateType = initialState, action: 
         case SET_ERROR: {
             return {
                 ...state,
-                error: action.error
+                registerError: action.registerError
             }
         }
 
@@ -41,15 +41,15 @@ const SET_STATUS = 'SET_STATUS'
 
 export type SetRegisterErrorACType = {
     type: typeof SET_ERROR,
-    error: string
+    registerError: string
 }
 export type SetRegisterStatusACType = {
     type: typeof SET_STATUS,
     status: number
 }
 
-export const setRegisterErrorAC = (error: string): SetRegisterErrorACType => {
-    return {type: 'SET_ERROR', error}
+export const setRegisterErrorAC = (registerError: string): SetRegisterErrorACType => {
+    return {type: 'SET_ERROR', registerError}
 }
 export const setRegisterStatusAC = (status: number): SetRegisterStatusACType => {
     return {type: 'SET_STATUS', status}

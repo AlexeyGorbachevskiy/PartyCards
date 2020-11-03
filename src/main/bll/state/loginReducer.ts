@@ -10,6 +10,12 @@ import {
     setRegisterStatusAC,
     SetRegisterStatusACType
 } from "./registerReducer";
+import {
+    setNewPasswordErrorAC,
+    SetNewPasswordErrorACType,
+    setNewPasswordSuccessMessageAC,
+    SetNewPasswordSuccessMessageACType
+} from "./newPasswordReducer";
 
 export type initialStateType = typeof initialState
 const initialState = {
@@ -113,7 +119,8 @@ export const setLoadingAC = (isLoading: boolean): SetLoadingACType => {
 
 export const loginThunkCreator = (email: string, password: string, remember: boolean) => {
     return (
-        (dispatch: Dispatch<ActionTypes | AuthDataACResponseType | SetRegisterStatusACType | SetRegisterErrorACType>) => {
+        (dispatch: Dispatch<ActionTypes | AuthDataACResponseType | SetRegisterStatusACType | SetRegisterErrorACType
+            | SetNewPasswordErrorACType | SetNewPasswordSuccessMessageACType>) => {
 
             // loader appears
             dispatch(setLoadingAC(true))
@@ -124,8 +131,14 @@ export const loginThunkCreator = (email: string, password: string, remember: boo
 
                     dispatch(setLoginDataAC(res.data))
                     dispatch(setAuthDataAC(true))
+
+                    // reset register state
                     dispatch(setRegisterStatusAC(0))
                     dispatch(setRegisterErrorAC(''))
+
+                    //reset new Password state
+                    dispatch(setNewPasswordErrorAC(''))
+                    dispatch(setNewPasswordSuccessMessageAC(''))
 
                     dispatch(setLoadingAC(false))
 

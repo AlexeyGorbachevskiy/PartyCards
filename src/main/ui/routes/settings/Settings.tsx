@@ -1,12 +1,12 @@
 import React from 'react';
 import style from './Settings.module.scss'
-import {compose} from "redux";
-import {withAuthRedirect} from "../../../utilities/hoc/withAuthRedirect";
+import {Redirect} from "react-router-dom";
 
 
 const Settings=()=>{
 
 
+    return <Redirect to="/password_restore"/>;
 
     return (
         <div className={style.settings}>
@@ -15,6 +15,4 @@ const Settings=()=>{
     )
 }
 
-export default compose(
-    withAuthRedirect,
-)(Settings)
+export default Settings

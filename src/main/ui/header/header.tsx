@@ -6,7 +6,6 @@ import {faAngleDown} from '@fortawesome/free-solid-svg-icons'
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootType} from "../../bll/state/store";
 import {logoutThunkCreator} from "../../bll/state/loginReducer";
-import Preloader from "../common/preloader/Preloader";
 
 const arrowDownElement = <FontAwesomeIcon className={style.arrow_down} icon={faAngleDown}/>
 
@@ -14,14 +13,14 @@ const arrowDownElement = <FontAwesomeIcon className={style.arrow_down} icon={faA
 const Header = () => {
 
     //for header background color
-    const isCurrentPageProfile=useSelector<AppRootType,boolean>(state=>state.app.isCurrentPageProfile)
+    const isCurrentPageProfile=useSelector<AppRootType,boolean>(state=>state.app.isCurrentPageProfile);
+
 
     const [isToggleCollapsed, setToggleCollapsed] = useState<boolean>(true);
     const [isFeaturesSubMenuExpanded, setFeaturesSubMenuExpanded] = useState<boolean>(false);
     const [isSettingsSubMenuExpanded, setSettingsSubMenuExpanded] = useState<boolean>(false);
 
     let isAuth = useSelector<AppRootType, boolean>(state => state.auth.isAuth);
-    const isLoading = useSelector<AppRootType, boolean>(state => state.login.isLoading);
     const dispatch = useDispatch();
 
     const logout = () => {
@@ -54,13 +53,6 @@ const Header = () => {
         setSettingsSubMenuExpanded(false)
     }
 
-    // if (isLoading) {
-    //     return (
-    //         <div className="App">
-    //             <Preloader/>
-    //         </div>
-    //     )
-    // }
 
 
     return (
@@ -109,20 +101,24 @@ const Header = () => {
 
                     <li>
                         <NavLink activeClassName={style.active_link} className={style.link}
-                                 to={'/settings'}>Settings {arrowDownElement}</NavLink>
-                        <ul className={style.sub_menu_wrapper}>
-                            <li>
-                                <NavLink activeClassName={style.active_link} className={style.sub_link}
-                                         to={'/password_restore'}>Restore</NavLink>
-                            </li>
-
-                            <li>
-                                <NavLink activeClassName={style.active_link} className={style.sub_link}
-                                         to={'/new_password'}>New password</NavLink>
-                            </li>
-
-                        </ul>
+                                 to={'/password_restore'}>Restore</NavLink>
                     </li>
+                    {/*<li>*/}
+                    {/*    <NavLink activeClassName={style.active_link} className={style.link}*/}
+                    {/*             to={'/settings'}>Settings {arrowDownElement}</NavLink>*/}
+                    {/*    <ul className={style.sub_menu_wrapper}>*/}
+                    {/*        <li>*/}
+                    {/*            <NavLink activeClassName={style.active_link} className={style.sub_link}*/}
+                    {/*                     to={'/password_restore'}>Restore</NavLink>*/}
+                    {/*        </li>*/}
+
+                    {/*        <li>*/}
+                    {/*            <NavLink activeClassName={style.active_link} className={style.sub_link}*/}
+                    {/*                     to={'/new_password'}>New password</NavLink>*/}
+                    {/*        </li>*/}
+
+                    {/*    </ul>*/}
+                    {/*</li>*/}
 
                     <li>
                         <NavLink activeClassName={style.active_link} className={style.link}
@@ -195,26 +191,30 @@ const Header = () => {
                 </li>
 
 
-                <li onClick={onExpandSettingsSubMenu} onBlur={onBlurSettingsSubMenu}>
+                <li>
                     <NavLink activeClassName={style.active_link} className={style.link}
-                             to={'/settings'}>Settings {arrowDownElement}</NavLink>
-
-
-                    <ul className={style.settings_vertical_sub_menu_wrapper}
-                        style={isSettingsSubMenuExpanded ? {'visibility': 'visible'} : {'visibility': 'hidden'}}>
-                        <li>
-                            <NavLink activeClassName={style.active_link} className={style.sub_link}
-                                     to={'/password_restore'}>Restore</NavLink>
-                        </li>
-
-                        <li>
-                            <NavLink activeClassName={style.active_link} className={style.sub_link}
-                                     to={'/new_password'}>New password</NavLink>
-                        </li>
-
-                    </ul>
-
+                             to={'/password_restore'}>Restore</NavLink>
                 </li>
+                {/*<li onClick={onExpandSettingsSubMenu} onBlur={onBlurSettingsSubMenu}>*/}
+                {/*    <NavLink activeClassName={style.active_link} className={style.link}*/}
+                {/*             to={'/settings'}>Settings {arrowDownElement}</NavLink>*/}
+
+
+                {/*    <ul className={style.settings_vertical_sub_menu_wrapper}*/}
+                {/*        style={isSettingsSubMenuExpanded ? {'visibility': 'visible'} : {'visibility': 'hidden'}}>*/}
+                {/*        <li>*/}
+                {/*            <NavLink activeClassName={style.active_link} className={style.sub_link}*/}
+                {/*                     to={'/password_restore'}>Restore</NavLink>*/}
+                {/*        </li>*/}
+
+                {/*        <li>*/}
+                {/*            <NavLink activeClassName={style.active_link} className={style.sub_link}*/}
+                {/*                     to={'/new_password'}>New password</NavLink>*/}
+                {/*        </li>*/}
+
+                {/*    </ul>*/}
+
+                {/*</li>*/}
 
 
                 <li>

@@ -48,7 +48,7 @@ const App = () => {
             <Route path='/login' render={() => <Login/>}/>
             <Route path='/register' render={() => <Register/>}/>
             <Route path='/settings' render={() => <Settings/>}/>
-            <Route path='/new_password' render={() => <NewPassword/>}/>
+            <Route path='/new_password/:token' render={() => <NewPassword/>}/>
             <Route path='/password_restore' render={() => <PasswordRestore/>}/>
             <Route path='/features' render={() => <Features/>}/>
             <Route path='/feature0' render={() => <Feature0/>}/>

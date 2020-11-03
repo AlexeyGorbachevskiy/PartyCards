@@ -5,9 +5,9 @@ import {AppRootType} from "../../../bll/state/store";
 import {withAuthRedirect} from "../../../utilities/hoc/withAuthRedirect";
 import {compose} from "redux";
 import {setIsCurrentPageProfileAC} from "../../../bll/state/appReducer";
-import {changeInfoThunkCreator, saveProfileInfoAC} from "../../../bll/state/profileReducer";
-import Preloader from "../../common/preloader/Preloader";
+import {changeInfoThunkCreator} from "../../../bll/state/profileReducer";
 import obj from "../../common/preloader/Preloader.module.css";
+import Preloader from "../../common/preloader/Preloader";
 
 
 const Profile = () => {
@@ -49,11 +49,11 @@ const Profile = () => {
     }, [])
 
 
-    // if (isLoading) {
-    //     return <div className="App" style={{display:'flex', justifyContent:'center',alignItems:'center'}}>
-    //         <Preloader/>
-    //     </div>
-    // }
+    if (isLoading) {
+        return <div className="App" style={{display:'flex', justifyContent:'center',alignItems:'center'}}>
+            <Preloader/>
+        </div>
+    }
 
     return (
         <div className={style.profile}>
