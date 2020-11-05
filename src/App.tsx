@@ -15,6 +15,7 @@ import Features from "./main/ui/routes/features/Features";
 import Feature0 from "./features/f0-test/Feature0";
 import Preloader from "./main/ui/common/preloader/Preloader";
 import {initializeAppThunkCreator} from "./main/bll/state/appReducer";
+import Packs from "./main/ui/routes/packs/Packs";
 
 const App = () => {
 
@@ -45,6 +46,7 @@ const App = () => {
             <Route exact path='/' render={() => <Redirect to={'/home'}/>}/>
             <Route path='/home' render={() => <Home/>}/>
             <Route path='/profile' render={() => <Profile/>}/>
+            <Route path='/packs' render={() => <Packs/>}/>
             <Route path='/login' render={() => <Login/>}/>
             <Route path='/register' render={() => <Register/>}/>
             <Route path='/settings' render={() => <Settings/>}/>

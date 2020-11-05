@@ -11,7 +11,11 @@ const axiosInstance = axios.create(
         // headers: {'API-KEY': '0b2bdd80-32f2-11ea-aa6d-ebd61add4aaa'}
     },
 );
-
+// declare module 'axios' {
+//     export interface AxiosRequestConfig {
+//         page?: number;
+//     }
+// }
 
 type LoginResponseType = {}
 
@@ -79,3 +83,12 @@ Password recovery link:
     }
 }
 
+
+export const packsAPI = {
+    //?&pageCount=817
+    getPacks(page: number, pageSize: number) {
+        return (
+            axiosInstance.get(`cards/pack?&pageCount=${pageSize}&page=${page}`)
+        )
+    },
+}

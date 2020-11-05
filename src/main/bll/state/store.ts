@@ -7,6 +7,7 @@ import {newPasswordReducer} from "./newPasswordReducer";
 import {profileReducer} from "./profileReducer";
 import thunk from "redux-thunk";
 import appReducer from "./appReducer";
+import {packsReducer} from "./packsReducer";
 
 
 const rootReducer = combineReducers({
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
     passwordRestore: passwordRestoreReducer,
     newPassword: newPasswordReducer,
     profile: profileReducer,
+    packs: packsReducer,
 })
 
 
