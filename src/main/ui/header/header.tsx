@@ -78,25 +78,30 @@ const Header = () => {
 
                     <li>
                         <NavLink activeClassName={style.active_link} className={style.link}
-                                 to={'/features'}>Features {arrowDownElement}</NavLink>
-                        <ul className={style.sub_menu_wrapper}>
-                            <li>
-                                <NavLink activeClassName={style.active_link} className={style.sub_link}
-                                         to={'/feature0'}>Feature 0</NavLink>
-                            </li>
-
-                            {/*<li>*/}
-                            {/*    <NavLink activeClassName={style.active_link} className={style.sub_link}*/}
-                            {/*             to={'/feature_1'}>Feature 1</NavLink>*/}
-                            {/*</li>*/}
-                            {/*<li>*/}
-                            {/*    <NavLink activeClassName={style.active_link} className={style.sub_link}*/}
-                            {/*             to={'/feature_2'}>Feature 2</NavLink>*/}
-                            {/*</li>*/}
-
-                        </ul>
-
+                                 to={'/packs'}>Packs</NavLink>
                     </li>
+
+                    {/*<li>*/}
+                    {/*    <NavLink activeClassName={style.active_link} className={style.link}*/}
+                    {/*             to={'/features'}>Features {arrowDownElement}</NavLink>*/}
+                    {/*    <ul className={style.sub_menu_wrapper}>*/}
+                    {/*        <li>*/}
+                    {/*            <NavLink activeClassName={style.active_link} className={style.sub_link}*/}
+                    {/*                     to={'/feature0'}>Feature 0</NavLink>*/}
+                    {/*        </li>*/}
+
+                    {/*        /!*<li>*!/*/}
+                    {/*        /!*    <NavLink activeClassName={style.active_link} className={style.sub_link}*!/*/}
+                    {/*        /!*             to={'/feature_1'}>Feature 1</NavLink>*!/*/}
+                    {/*        /!*</li>*!/*/}
+                    {/*        /!*<li>*!/*/}
+                    {/*        /!*    <NavLink activeClassName={style.active_link} className={style.sub_link}*!/*/}
+                    {/*        /!*             to={'/feature_2'}>Feature 2</NavLink>*!/*/}
+                    {/*        /!*</li>*!/*/}
+
+                    {/*    </ul>*/}
+
+                    {/*</li>*/}
 
 
                     <li>
@@ -167,28 +172,33 @@ const Header = () => {
                              to={'/profile'}>Profile</NavLink>
                 </li>
 
-                <li onClick={onExpandFeaturesSubMenu} onBlur={onBlurFeaturesSubMenu}>
+                <li>
                     <NavLink activeClassName={style.active_link} className={style.link}
-                             to={'/features'}>Features {arrowDownElement}</NavLink>
-
-                    <ul className={style.features_vertical_sub_menu_wrapper}
-                        style={isFeaturesSubMenuExpanded ? {'visibility': 'visible'} : {'visibility': 'hidden'}}>
-                        <li>
-                            <NavLink activeClassName={style.active_link} className={style.sub_link}
-                                     to={'/feature0'}>Feature 0</NavLink>
-                        </li>
-
-                        {/*<li>*/}
-                        {/*    <NavLink activeClassName={style.active_link} className={style.sub_link}*/}
-                        {/*             to={'/feature_1'}>Feature 1</NavLink>*/}
-                        {/*</li>*/}
-                        {/*<li>*/}
-                        {/*    <NavLink activeClassName={style.active_link} className={style.sub_link}*/}
-                        {/*             to={'/feature_2'}>Feature 2</NavLink>*/}
-                        {/*</li>*/}
-
-                    </ul>
+                             to={'/packs'}>Packs</NavLink>
                 </li>
+
+                {/*<li onClick={onExpandFeaturesSubMenu} onBlur={onBlurFeaturesSubMenu}>*/}
+                {/*    <NavLink activeClassName={style.active_link} className={style.link}*/}
+                {/*             to={'/features'}>Features {arrowDownElement}</NavLink>*/}
+
+                {/*    <ul className={style.features_vertical_sub_menu_wrapper}*/}
+                {/*        style={isFeaturesSubMenuExpanded ? {'visibility': 'visible'} : {'visibility': 'hidden'}}>*/}
+                {/*        <li>*/}
+                {/*            <NavLink activeClassName={style.active_link} className={style.sub_link}*/}
+                {/*                     to={'/feature0'}>Feature 0</NavLink>*/}
+                {/*        </li>*/}
+
+                {/*        /!*<li>*!/*/}
+                {/*        /!*    <NavLink activeClassName={style.active_link} className={style.sub_link}*!/*/}
+                {/*        /!*             to={'/feature_1'}>Feature 1</NavLink>*!/*/}
+                {/*        /!*</li>*!/*/}
+                {/*        /!*<li>*!/*/}
+                {/*        /!*    <NavLink activeClassName={style.active_link} className={style.sub_link}*!/*/}
+                {/*        /!*             to={'/feature_2'}>Feature 2</NavLink>*!/*/}
+                {/*        /!*</li>*!/*/}
+
+                {/*    </ul>*/}
+                {/*</li>*/}
 
 
                 <li>
