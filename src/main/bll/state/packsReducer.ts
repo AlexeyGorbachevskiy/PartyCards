@@ -121,7 +121,7 @@ export const setPacksDataAC = (packsData: PacksDataType): SetPacksDataACType => 
 
 export const getPacksThunkCreator = (page: number, pageSize: number) => {
     return (
-        (dispatch: Dispatch<ActionTypes | AuthDataACResponseType | SetLoadingACType>) => {
+        (dispatch: Dispatch<ActionTypes | AuthDataACResponseType | SetLoadingACType | SetPacksErrorACType>) => {
 
             // loader appears
             dispatch(setLoadingAC(true))
@@ -139,6 +139,59 @@ export const getPacksThunkCreator = (page: number, pageSize: number) => {
                     const error = e.response ? e.response.data.error : (e.message + 'more details in console')
                     console.log('Error', error)
 
+                    setPacksErrorAC(error)
+
+                    dispatch(setLoadingAC(false))
+                })
+        }
+    )
+}
+
+export const postNewPackThunkCreator = (packName:string, privatePack:boolean, page: number, pageSize: number) => {
+    return (
+        (dispatch: Dispatch<ActionTypes | SetLoadingACType | any>) => {
+
+            // loader appears
+            dispatch(setLoadingAC(true))
+
+            packsAPI.postPack(packName, privatePack)
+                .then((res) => {
+                    console.log(res)
+
+                    dispatch(getPacksThunkCreator(page,pageSize))
+                    dispatch(setLoadingAC(false))
+
+                })
+                .catch((e) => {
+                    const error = e.response ? e.response.data.error : (e.message + 'more details in console')
+                    console.log('Error', error)
+
+                    dispatch(setLoadingAC(false))
+                })
+        }
+    )
+}
+
+
+
+export const updatePackThunkCreator = (packId:string,packName:string, page: number, pageSize: number) => {
+    return (
+        (dispatch: Dispatch<ActionTypes | SetLoadingACType | any>) => {
+
+            // loader appears
+            dispatch(setLoadingAC(true))
+
+            packsAPI.updatePack(packId,packName)
+                .then((res) => {
+                    console.log(res)
+
+                    dispatch(getPacksThunkCreator(page,pageSize))
+                    dispatch(setLoadingAC(false))
+
+                })
+                .catch((e) => {
+                    const error = e.response ? e.response.data.error : (e.message + 'more details in console')
+                    console.log('Error', error)
 
                     dispatch(setLoadingAC(false))
                 })

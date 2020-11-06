@@ -91,4 +91,14 @@ export const packsAPI = {
             axiosInstance.get(`cards/pack?&pageCount=${pageSize}&page=${page}`)
         )
     },
+    postPack(packName: string, privatePack: boolean) {
+        return (
+            axiosInstance.post(`cards/pack`, {cardsPack: {name: packName, private: privatePack}})
+        )
+    },
+    updatePack(packId: string, packName: string) {
+        return (
+            axiosInstance.put(`cards/pack`, {cardsPack: {_id: packId, name: packName}})
+        )
+    }
 }
