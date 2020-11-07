@@ -6,6 +6,9 @@ import {setLoadingAC, SetLoadingACType} from "./loginReducer";
 type initialStateType = typeof initialState
 const initialState = {
 
+    currentMinCardsCount: 0,
+    currentMaxCardsCount: 26,
+
     preflightTotalCount: null as number | null,
 
     packsData: {
@@ -23,7 +26,7 @@ const initialState = {
 }
 
 
-type ActionTypes = SetPacksErrorACType | SetPacksDataACType | SetPacksTotalCountACType
+type ActionTypes = SetPacksErrorACType | SetPacksDataACType | SetPacksTotalCountACType | SetMinMaxCardsCountsACType
 
 export const packsReducer = (state: initialStateType = initialState, action: ActionTypes): initialStateType => {
     switch (action.type) {
@@ -53,6 +56,14 @@ export const packsReducer = (state: initialStateType = initialState, action: Act
             }
         }
 
+        case SET_MIN_MAX_CARDS_COUNT: {
+            return {
+                ...state,
+                currentMinCardsCount: action.currentMinCardsCount,
+                currentMaxCardsCount: action.currentMaxCardsCount,
+            }
+        }
+
         default: {
             return state
         }
@@ -62,6 +73,7 @@ export const packsReducer = (state: initialStateType = initialState, action: Act
 const SET_ERROR = 'SET_ERROR'
 const SET_PACKS_DATA = 'SET_PACKS_DATA'
 const SET_PACKS_TOTAL_COUNT = 'SET_PACKS_TOTAL_COUNT'
+const SET_MIN_MAX_CARDS_COUNT = 'SET_MIN_MAX_CARDS_COUNT'
 
 
 export type CardPacksItemType = {
@@ -109,6 +121,16 @@ export type SetPacksTotalCountACType = {
     packsTotalCount: number
 }
 
+export type SetMinMaxCardsCountsACType = {
+    type: typeof SET_MIN_MAX_CARDS_COUNT,
+    currentMinCardsCount: number,
+    currentMaxCardsCount: number,
+}
+
+
+export const setMinMaxCardsCountsAC = (currentMinCardsCount: number, currentMaxCardsCount: number): SetMinMaxCardsCountsACType => {
+    return {type: 'SET_MIN_MAX_CARDS_COUNT', currentMinCardsCount, currentMaxCardsCount}
+}
 
 export const setPacksErrorAC = (packsError: string): SetPacksErrorACType => {
     return {type: 'SET_ERROR', packsError}
@@ -119,19 +141,19 @@ export const setPacksDataAC = (packsData: PacksDataType): SetPacksDataACType => 
 }
 
 
-export const getPacksThunkCreator = (page: number, pageSize: number) => {
+export const getPacksThunkCreator = (min: number, max: number, page: number, pageSize: number) => {
     return (
         (dispatch: Dispatch<ActionTypes | AuthDataACResponseType | SetLoadingACType | SetPacksErrorACType>) => {
 
             // loader appears
             dispatch(setLoadingAC(true))
 
-            packsAPI.getPacks(page,pageSize)
+            packsAPI.getPacks(min, max, page, pageSize)
                 .then((res) => {
                     console.log(res)
 
                     dispatch(setPacksDataAC(res.data))
-
+                    dispatch(setMinMaxCardsCountsAC(min, max))
                     dispatch(setLoadingAC(false))
 
                 })
@@ -147,7 +169,7 @@ export const getPacksThunkCreator = (page: number, pageSize: number) => {
     )
 }
 
-export const postNewPackThunkCreator = (packName:string, privatePack:boolean, page: number, pageSize: number) => {
+export const postNewPackThunkCreator = (min: number, max: number, packName: string, privatePack: boolean, page: number, pageSize: number) => {
     return (
         (dispatch: Dispatch<ActionTypes | SetLoadingACType | any>) => {
 
@@ -158,7 +180,7 @@ export const postNewPackThunkCreator = (packName:string, privatePack:boolean, pa
                 .then((res) => {
                     console.log(res)
 
-                    dispatch(getPacksThunkCreator(page,pageSize))
+                    dispatch(getPacksThunkCreator(min, max, page, pageSize))
                     dispatch(setLoadingAC(false))
 
                 })
@@ -173,19 +195,44 @@ export const postNewPackThunkCreator = (packName:string, privatePack:boolean, pa
 }
 
 
-
-export const updatePackThunkCreator = (packId:string,packName:string, page: number, pageSize: number) => {
+export const updatePackThunkCreator = (min: number, max: number, packId: string, packName: string, page: number, pageSize: number) => {
     return (
         (dispatch: Dispatch<ActionTypes | SetLoadingACType | any>) => {
 
             // loader appears
             dispatch(setLoadingAC(true))
 
-            packsAPI.updatePack(packId,packName)
+            packsAPI.updatePack(packId, packName)
                 .then((res) => {
                     console.log(res)
 
-                    dispatch(getPacksThunkCreator(page,pageSize))
+                    dispatch(getPacksThunkCreator(min, max, page, pageSize))
+                    dispatch(setLoadingAC(false))
+
+                })
+                .catch((e) => {
+                    const error = e.response ? e.response.data.error : (e.message + 'more details in console')
+                    console.log('Error', error)
+
+                    dispatch(setLoadingAC(false))
+                })
+        }
+    )
+}
+
+
+export const deletePackThunkCreator = (min: number, max: number, packId: string, page: number, pageSize: number) => {
+    return (
+        (dispatch: Dispatch<ActionTypes | SetLoadingACType | any>) => {
+
+            // loader appears
+            dispatch(setLoadingAC(true))
+
+            packsAPI.deletePack(packId)
+                .then((res) => {
+                    console.log(res)
+
+                    dispatch(getPacksThunkCreator(min, max, page, pageSize))
                     dispatch(setLoadingAC(false))
 
                 })
@@ -201,4 +248,30 @@ export const updatePackThunkCreator = (packId:string,packName:string, page: numb
 
 
 
+export const searchForPackName = (packName: string, myAccountId: string,min: number, max: number, page: number, pageSize: number) => {
+    return (
+        (dispatch: Dispatch<ActionTypes | AuthDataACResponseType | SetLoadingACType | SetPacksErrorACType>) => {
 
+            // loader appears
+            dispatch(setLoadingAC(true))
+
+            packsAPI.searchForPackName(packName,myAccountId,min, max, page, pageSize)
+                .then((res) => {
+                    console.log(res)
+
+                    dispatch(setPacksDataAC(res.data))
+                    dispatch(setMinMaxCardsCountsAC(min, max))
+                    dispatch(setLoadingAC(false))
+
+                })
+                .catch((e) => {
+                    const error = e.response ? e.response.data.error : (e.message + 'more details in console')
+                    console.log('Error', error)
+
+                    setPacksErrorAC(error)
+
+                    dispatch(setLoadingAC(false))
+                })
+        }
+    )
+}

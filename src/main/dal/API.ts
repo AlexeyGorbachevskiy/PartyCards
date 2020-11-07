@@ -86,9 +86,9 @@ Password recovery link:
 
 export const packsAPI = {
     //?&pageCount=817
-    getPacks(page: number, pageSize: number) {
+    getPacks(min: number, max: number, page: number, pageSize: number) {
         return (
-            axiosInstance.get(`cards/pack?&pageCount=${pageSize}&page=${page}`)
+            axiosInstance.get(`cards/pack?&pageCount=${pageSize}&page=${page}&min=${min}&max=${max}`)
         )
     },
     postPack(packName: string, privatePack: boolean) {
@@ -100,5 +100,17 @@ export const packsAPI = {
         return (
             axiosInstance.put(`cards/pack`, {cardsPack: {_id: packId, name: packName}})
         )
+    },
+    deletePack(packId: string) {
+        return (
+            axiosInstance.delete(`cards/pack?id=${packId}`)
+        )
+    },
+    searchForPackName(packName: string, myAccountId: string,min: number, max: number, page: number, pageSize: number){
+        console.log(myAccountId)
+        return (
+            axiosInstance.get(`cards/pack?&pageCount=${pageSize}&page=${page}&min=${min}&max=${max}&packName=${packName}&user_id=${myAccountId}`)
+        )
     }
+
 }
