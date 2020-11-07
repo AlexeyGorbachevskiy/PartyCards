@@ -13,7 +13,7 @@ const arrowDownElement = <FontAwesomeIcon className={style.arrow_down} icon={faA
 const Header = () => {
 
     //for header background color
-    const isCurrentPageProfile=useSelector<AppRootType,boolean>(state=>state.app.isCurrentPageProfile);
+    const isCurrentPageProfile = useSelector<AppRootType, boolean>(state => state.app.isCurrentPageProfile);
 
 
     const [isToggleCollapsed, setToggleCollapsed] = useState<boolean>(true);
@@ -54,9 +54,9 @@ const Header = () => {
     }
 
 
-
     return (
-        <div className={style.header} style={isCurrentPageProfile ? {backgroundColor:'#1e2326'} : {backgroundColor:'transparent'}}>
+        <div className={style.header}
+             style={isCurrentPageProfile ? {backgroundColor: '#1e2326'} : {backgroundColor: 'transparent'}}>
             <div className={style.container}
                  style={!isToggleCollapsed ? {'backgroundColor': '#1e2326'} : {'backgroundColor': 'transparent'}}>
 
@@ -104,31 +104,22 @@ const Header = () => {
                     {/*</li>*/}
 
 
-                    <li>
-                        <NavLink activeClassName={style.active_link} className={style.link}
-                                 to={'/password_restore'}>Restore</NavLink>
-                    </li>
-                    {/*<li>*/}
-                    {/*    <NavLink activeClassName={style.active_link} className={style.link}*/}
-                    {/*             to={'/settings'}>Settings {arrowDownElement}</NavLink>*/}
-                    {/*    <ul className={style.sub_menu_wrapper}>*/}
-                    {/*        <li>*/}
-                    {/*            <NavLink activeClassName={style.active_link} className={style.sub_link}*/}
-                    {/*                     to={'/password_restore'}>Restore</NavLink>*/}
-                    {/*        </li>*/}
+                    {
+                        isAuth ? '' :
+                            <li>
+                                <NavLink activeClassName={style.active_link} className={style.link}
+                                         to={'/password_restore'}>Restore</NavLink>
+                            </li>
+                    }
 
-                    {/*        <li>*/}
-                    {/*            <NavLink activeClassName={style.active_link} className={style.sub_link}*/}
-                    {/*                     to={'/new_password'}>New password</NavLink>*/}
-                    {/*        </li>*/}
+                    {
+                        isAuth ? '' :
 
-                    {/*    </ul>*/}
-                    {/*</li>*/}
-
-                    <li>
-                        <NavLink activeClassName={style.active_link} className={style.link}
-                                 to={'/register'}>Register</NavLink>
-                    </li>
+                            <li>
+                                <NavLink activeClassName={style.active_link} className={style.link}
+                                         to={'/register'}>Register</NavLink>
+                            </li>
+                    }
 
                     {
                         isAuth ?
@@ -177,66 +168,32 @@ const Header = () => {
                              to={'/packs'}>Packs</NavLink>
                 </li>
 
-                {/*<li onClick={onExpandFeaturesSubMenu} onBlur={onBlurFeaturesSubMenu}>*/}
-                {/*    <NavLink activeClassName={style.active_link} className={style.link}*/}
-                {/*             to={'/features'}>Features {arrowDownElement}</NavLink>*/}
 
-                {/*    <ul className={style.features_vertical_sub_menu_wrapper}*/}
-                {/*        style={isFeaturesSubMenuExpanded ? {'visibility': 'visible'} : {'visibility': 'hidden'}}>*/}
-                {/*        <li>*/}
-                {/*            <NavLink activeClassName={style.active_link} className={style.sub_link}*/}
-                {/*                     to={'/feature0'}>Feature 0</NavLink>*/}
-                {/*        </li>*/}
-
-                {/*        /!*<li>*!/*/}
-                {/*        /!*    <NavLink activeClassName={style.active_link} className={style.sub_link}*!/*/}
-                {/*        /!*             to={'/feature_1'}>Feature 1</NavLink>*!/*/}
-                {/*        /!*</li>*!/*/}
-                {/*        /!*<li>*!/*/}
-                {/*        /!*    <NavLink activeClassName={style.active_link} className={style.sub_link}*!/*/}
-                {/*        /!*             to={'/feature_2'}>Feature 2</NavLink>*!/*/}
-                {/*        /!*</li>*!/*/}
-
-                {/*    </ul>*/}
-                {/*</li>*/}
+                {
+                    isAuth ? '' :
+                        <li>
+                            <NavLink activeClassName={style.active_link} className={style.link}
+                                     to={'/password_restore'}>Restore</NavLink>
+                        </li>
+                }
 
 
-                <li>
-                    <NavLink activeClassName={style.active_link} className={style.link}
-                             to={'/password_restore'}>Restore</NavLink>
-                </li>
-                {/*<li onClick={onExpandSettingsSubMenu} onBlur={onBlurSettingsSubMenu}>*/}
-                {/*    <NavLink activeClassName={style.active_link} className={style.link}*/}
-                {/*             to={'/settings'}>Settings {arrowDownElement}</NavLink>*/}
 
-
-                {/*    <ul className={style.settings_vertical_sub_menu_wrapper}*/}
-                {/*        style={isSettingsSubMenuExpanded ? {'visibility': 'visible'} : {'visibility': 'hidden'}}>*/}
-                {/*        <li>*/}
-                {/*            <NavLink activeClassName={style.active_link} className={style.sub_link}*/}
-                {/*                     to={'/password_restore'}>Restore</NavLink>*/}
-                {/*        </li>*/}
-
-                {/*        <li>*/}
-                {/*            <NavLink activeClassName={style.active_link} className={style.sub_link}*/}
-                {/*                     to={'/new_password'}>New password</NavLink>*/}
-                {/*        </li>*/}
-
-                {/*    </ul>*/}
-
-                {/*</li>*/}
-
-
-                <li>
-                    <NavLink activeClassName={style.active_link} className={style.link}
-                             to={'/register'}>Register</NavLink>
-                </li>
+                {
+                    isAuth ? '' :
+                        <li>
+                            <NavLink activeClassName={style.active_link} className={style.link}
+                                     to={'/register'}>Register</NavLink>
+                        </li>
+                }
 
                 {
                     isAuth ?
                         <li>
-                            <NavLink className={style.logout + ' ' + style.link}
-                                     to={'#'}>Log
+                            <NavLink
+                                onClick={logout}
+                                className={style.logout + ' ' + style.link}
+                                to={'#'}>Log
                                 Out</NavLink>
                         </li>
                         :

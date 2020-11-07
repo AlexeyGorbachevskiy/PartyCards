@@ -1,18 +1,20 @@
 import React, {ChangeEvent, MouseEvent, useEffect, useState} from 'react';
 import style from './Packs.module.scss'
-import {Button, Checkbox, Form, Input, Modal, Popconfirm, Space, Table} from "antd";
+import {Button, Checkbox, Form, Input, Modal, Popconfirm, Slider, Space, Table} from "antd";
 import 'antd/dist/antd.css';
 import {useDispatch, useSelector} from "react-redux";
 import {
+    deletePackThunkCreator,
     getPacksThunkCreator,
     PacksDataType,
-    postNewPackThunkCreator,
+    postNewPackThunkCreator, searchForPackName,
     updatePackThunkCreator
 } from "../../../bll/state/packsReducer";
 import {withAuthRedirect} from "../../../utilities/hoc/withAuthRedirect";
 import {compose} from "redux";
 import {AppRootType} from "../../../bll/state/store";
 import {CheckboxChangeEvent} from "antd/es/checkbox";
+import Search from "antd/es/input/Search";
 
 
 const Packs = () => {
@@ -22,6 +24,11 @@ const Packs = () => {
 
     const pageCount = useSelector<AppRootType, number | null>(state => state.packs.packsData.pageCount);
     const pageSize = Number(pageCount);
+
+
+    const currentMinCardsCount = useSelector<AppRootType, number>(state => state.packs.currentMinCardsCount);
+    const currentMaxCardsCount = useSelector<AppRootType, number>(state => state.packs.currentMaxCardsCount);
+    const myAccountId = useSelector<AppRootType, string>(state => state.login._id);
 
 
     const [form] = Form.useForm();
@@ -84,7 +91,7 @@ const Packs = () => {
                         <a onClick={() => editPack(record)}>
                             Edit
                         </a>
-                        <a>Delete</a>
+                        <a onClick={() => deletePack(record)}>Delete</a>
                     </Space>
                 );
 
@@ -94,6 +101,7 @@ const Packs = () => {
         {
             title: 'Cards',
             key: 'cards',
+            align: 'center' as 'center',
             render: (text: any, record: any) => (
                 <Space size="middle">
                     <a>Cards</a>
@@ -107,7 +115,7 @@ const Packs = () => {
 
     const dispatch = useDispatch();
     useEffect(() => {
-        dispatch(getPacksThunkCreator(1, 10))
+        dispatch(getPacksThunkCreator(0, 26, 1, 50))
     }, []);
 
 
@@ -137,7 +145,15 @@ const Packs = () => {
     };
 
     const handleChange = (currentPage: any, pageSize: any) => {
-        dispatch(getPacksThunkCreator(Number(currentPage), Number(pageSize)))
+        dispatch(getPacksThunkCreator(currentMinCardsCount, currentMaxCardsCount, Number(currentPage), Number(pageSize)))
+    }
+
+
+    // Delete Pack
+    const deletePack = (record: Item) => {
+        const id = packsData.cardPacks[+record.key - 1]._id
+
+        dispatch(deletePackThunkCreator(currentMinCardsCount, currentMaxCardsCount, id, currentPage, pageSize))
     }
 
     // Edit Pack
@@ -156,7 +172,7 @@ const Packs = () => {
         const packId = packsData.cardPacks[+key - 1]._id;
 
         if (oldName !== newName) {
-            dispatch(updatePackThunkCreator(packId, newName, currentPage, pageSize))
+            dispatch(updatePackThunkCreator(currentMinCardsCount, currentMaxCardsCount, packId, newName, currentPage, pageSize))
         }
         setEditingKey("");
     }
@@ -181,7 +197,16 @@ const Packs = () => {
 
     // Add new pack
     const handleOk = (e: MouseEvent<HTMLElement>) => {
-        dispatch(postNewPackThunkCreator(modalInputValue, modalCheckboxValue, Number(packsData.page), Number(packsData.pageCount)))
+        dispatch(postNewPackThunkCreator
+        (
+            currentMinCardsCount,
+            currentMaxCardsCount,
+            modalInputValue,
+            modalCheckboxValue,
+            Number(packsData.page),
+            Number(packsData.pageCount
+            )));
+
         setModalInputValue('')
         setStateVisible(false)
         setModalCheckboxChange(false)
@@ -191,6 +216,62 @@ const Packs = () => {
         setModalInputValue('')
         setStateVisible(false)
         setModalCheckboxChange(false)
+    };
+
+
+    // Antd slider
+    function onChange(value: any) {
+    }
+
+    function onAfterChange(value: any) {
+        console.log(value)
+        dispatch(getPacksThunkCreator(value[0], value[1], currentPage, pageSize))
+    }
+
+    // Antd search
+    const [searchInputValue, setSearchInputValue] = useState('')
+    const [searchCheckboxValue, setSearchCheckboxValue] = useState(false)
+
+    const onSearchInputChange = (e: any) => {
+        setSearchInputValue(e.currentTarget.value)
+    }
+
+    const onSearch = () => {
+
+        let myId = ''
+        if (searchCheckboxValue) {
+            myId = myAccountId
+        }
+
+        dispatch(searchForPackName(
+            searchInputValue,
+            myId,
+            currentMinCardsCount,
+            currentMaxCardsCount,
+            currentPage,
+            pageSize
+            ))
+
+        setSearchInputValue('')
+    }
+
+    const onSearchCheckboxChange = (e: any) => {
+        setSearchCheckboxValue(e.target.checked)
+    }
+
+    const marks = {
+        0: {
+            style: {
+                color: 'white'
+            },
+            label: 0
+        },
+        26: {
+            style: {
+                color: 'white'
+            },
+            label: 26
+        },
     };
 
 
@@ -249,18 +330,60 @@ const Packs = () => {
                 </Checkbox>
             </Modal>
 
-            <Button
-                onClick={handleAdd}
-                className={style.add_btn}
-                // onClick={handleAdd}
-                type="primary"
-                style={{
-                    marginBottom: 16,
-                    marginLeft: 16,
-                }}
-            >
-                Add new Pack
-            </Button>
+
+            <div className={style.pack_settings}>
+
+                <Button
+                    onClick={handleAdd}
+                    className={style.add_btn}
+                    // onClick={handleAdd}
+                    type="primary"
+                    style={{
+                        // marginBottom: 16,
+                        marginLeft: 16,
+                    }}
+                >
+                    Add new Pack
+                </Button>
+
+                <div className={style.twice_slider}>
+                    <h4>Filter by cards count</h4>
+                    <Slider
+                        marks={marks}
+                        range
+                        step={1}
+                        min={0}
+                        max={26}
+                        defaultValue={[0, 26]}
+                        onChange={onChange}
+                        onAfterChange={onAfterChange}
+
+                    />
+
+                </div>
+
+                <div className={style.search_wrapper}>
+                    <Checkbox
+                        className={style.search_checkbox}
+                        checked={searchCheckboxValue}
+                        onChange={onSearchCheckboxChange}
+                    >My Packs Only
+                    </Checkbox>
+                    <Search className={style.search}
+                            placeholder="Search for Pack Name"
+                            onSearch={onSearch}
+                            enterButton
+                            size="middle"
+                            value={searchInputValue}
+                            onChange={onSearchInputChange}
+                            // allowClear
+                            loading={isLoading}
+                    />
+                </div>
+
+
+            </div>
+
 
             <Form form={form} component={false}>
                 <Table className={style.table} dataSource={dataSource}
@@ -274,11 +397,11 @@ const Packs = () => {
                        }}
                        bordered
                        rowClassName={style.editableRow}
-                       scroll={{x: 1500, y: 300}}
+                       scroll={{x: 1500, y: 400}}
                        loading={isLoading}
                        pagination={{
                            total: packsData.cardPacksTotalCount ? packsData.cardPacksTotalCount : 5,
-                           defaultPageSize: 10,
+                           defaultPageSize: 50,
                            showSizeChanger: true,
                            pageSizeOptions: ['1', '5', '10', '50', '100'],
                            onChange: handleChange,
