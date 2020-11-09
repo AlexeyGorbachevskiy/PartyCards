@@ -21,9 +21,6 @@ const Login = () => {
     // const stateEmail = useSelector<AppRootType, string>(state => state.login.email)
     const isAuth = useSelector<AppRootType, boolean>(state => state.auth.isAuth);
     const isLoading = useSelector<AppRootType, boolean>(state => state.login.isLoading);
-    const registerStatus = useSelector<AppRootType, number>(state => state.register.status)
-    const newPasswordMessage = useSelector<AppRootType, string>(state => state.newPassword.mewPasswordMessage)
-    const newPasswordError = useSelector<AppRootType, string>(state => state.newPassword.newPasswordError)
 
     const onLogin = () => {
         if (email.trim() === '' || password.trim() === '') {
@@ -75,20 +72,6 @@ const Login = () => {
 
             <div className={style.login_form}>
                 <h2>Log In</h2>
-
-                {
-                    registerStatus === 201 ?
-                        <p style={{color: 'green', fontSize: '18px', textAlign: 'center', maxWidth: '70%'}}>You are
-                            successfully
-                            registered. Now
-                            you need to login.</p> : ''
-                }
-                {
-                    newPasswordMessage && !newPasswordError ?
-                        <p style={{color: 'green', fontSize: '18px', textAlign: 'center', maxWidth: '70%'}}>
-                            Password was successfully changed. You need to log in now</p>
-                        : ''
-                }
 
                 <div className={style.credentials}>
                     <p>Email: "nya-admin@nya.nya" </p>

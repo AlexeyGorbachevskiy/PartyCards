@@ -1,13 +1,13 @@
 import React, {ChangeEvent, MouseEvent, useEffect, useState} from 'react';
 import style from './Packs.module.scss'
-import {Button, Checkbox, Form, Input, Modal, Popconfirm, Slider, Space, Table} from "antd";
+import {Alert, Button, Checkbox, Form, Input, message, Modal, Popconfirm, Slider, Space, Table} from "antd";
 import 'antd/dist/antd.css';
 import {useDispatch, useSelector} from "react-redux";
 import {
     deletePackThunkCreator,
     getPacksThunkCreator,
     PacksDataType,
-    postNewPackThunkCreator, searchForPackName,
+    postNewPackThunkCreator, searchForPackName, setPacksErrorAC, sortPacks,
     updatePackThunkCreator
 } from "../../../bll/state/packsReducer";
 import {withAuthRedirect} from "../../../utilities/hoc/withAuthRedirect";
@@ -29,6 +29,8 @@ const Packs = () => {
     const currentMinCardsCount = useSelector<AppRootType, number>(state => state.packs.currentMinCardsCount);
     const currentMaxCardsCount = useSelector<AppRootType, number>(state => state.packs.currentMaxCardsCount);
     const myAccountId = useSelector<AppRootType, string>(state => state.login._id);
+
+    const mainError = useSelector<AppRootType, string>(state => state.packs.packsError);
 
 
     const [form] = Form.useForm();
@@ -60,6 +62,7 @@ const Packs = () => {
             dataIndex: 'created',
             key: 'created',
             align: 'center' as 'center',
+            sorter: (a: any, b: any) => a.created - b.created,
         },
         {
             title: 'Updated',
@@ -140,6 +143,42 @@ const Packs = () => {
         )
     })
 
+
+    // on Table Change
+    const onTableChange = (pagination: any, filters: any, sorter: any, extra: any) => {
+
+        let myId = ''
+        if (searchCheckboxValue) {
+            myId = myAccountId
+        }
+
+        if (sorter.column) {
+
+            dispatch(sortPacks(
+                sorter.column.dataIndex,
+                sorter.order,
+                searchInputValue,
+                myId,
+                currentMinCardsCount,
+                currentMaxCardsCount,
+                currentPage,
+                pageSize
+            ))
+        } else {
+            dispatch(sortPacks(
+                'updated',
+                'descend',
+                searchInputValue,
+                myId,
+                currentMinCardsCount,
+                currentMaxCardsCount,
+                currentPage,
+                pageSize
+            ))
+        }
+
+    }
+
     const handleAdd = () => {
         showModal()
     };
@@ -152,7 +191,6 @@ const Packs = () => {
     // Delete Pack
     const deletePack = (record: Item) => {
         const id = packsData.cardPacks[+record.key - 1]._id
-
         dispatch(deletePackThunkCreator(currentMinCardsCount, currentMaxCardsCount, id, currentPage, pageSize))
     }
 
@@ -181,6 +219,7 @@ const Packs = () => {
     const [stateVisible, setStateVisible] = useState(false);
     const [modalInputValue, setModalInputValue] = useState('');
     const [modalCheckboxValue, setModalCheckboxChange] = useState(false);
+    const [isModalSearchInputError, setIsModalSearchInputError] = useState(false);
 
     const onModalCheckboxChange = (e: CheckboxChangeEvent) => {
         setModalCheckboxChange(e.target.checked)
@@ -197,6 +236,12 @@ const Packs = () => {
 
     // Add new pack
     const handleOk = (e: MouseEvent<HTMLElement>) => {
+
+        if (modalInputValue.trim() === '') {
+            setIsModalSearchInputError(true)
+            return
+        }
+
         dispatch(postNewPackThunkCreator
         (
             currentMinCardsCount,
@@ -210,12 +255,16 @@ const Packs = () => {
         setModalInputValue('')
         setStateVisible(false)
         setModalCheckboxChange(false)
+
+        setIsModalSearchInputError(false)
     };
 
     const handleCancel = (e: MouseEvent<HTMLElement>) => {
         setModalInputValue('')
         setStateVisible(false)
         setModalCheckboxChange(false)
+
+        setIsModalSearchInputError(false)
     };
 
 
@@ -224,7 +273,6 @@ const Packs = () => {
     }
 
     function onAfterChange(value: any) {
-        console.log(value)
         dispatch(getPacksThunkCreator(value[0], value[1], currentPage, pageSize))
     }
 
@@ -250,9 +298,9 @@ const Packs = () => {
             currentMaxCardsCount,
             currentPage,
             pageSize
-            ))
+        ))
 
-        setSearchInputValue('')
+        // setSearchInputValue('')
     }
 
     const onSearchCheckboxChange = (e: any) => {
@@ -306,6 +354,11 @@ const Packs = () => {
     });
 
 
+    const onErrorAlertClose = (e: React.MouseEvent<HTMLButtonElement>) => {
+        dispatch(setPacksErrorAC(''))
+    }
+
+
     return (
         <div className={style.packs}>
 
@@ -319,7 +372,21 @@ const Packs = () => {
                 onCancel={handleCancel}
             >
                 <label>Type new Pack name</label>
-                <Input value={modalInputValue} onChange={onModalInputChange} style={{marginTop: '5px'}} type="text"/>
+                <Input value={modalInputValue}
+                       onChange={onModalInputChange}
+                       style={
+                           isModalSearchInputError ?
+                               {borderColor: 'red', marginTop: '5px'}
+                               :
+                               {marginTop: '5px'}
+                       }
+                       type="text"
+                />
+                {
+                    isModalSearchInputError ?
+                        <div style={{textAlign: 'left', color: 'red'}}>Pack Name field is required</div>
+                        : ''
+                }
 
                 {/*<label>Private</label> <span> </span>*/}
                 <Checkbox style={{marginTop: '5px'}}
@@ -376,7 +443,7 @@ const Packs = () => {
                             size="middle"
                             value={searchInputValue}
                             onChange={onSearchInputChange}
-                            // allowClear
+                        // allowClear
                             loading={isLoading}
                     />
                 </div>
@@ -389,6 +456,8 @@ const Packs = () => {
                 <Table className={style.table} dataSource={dataSource}
                     // columns={columns}
                        columns={mergedColumns}
+
+                       onChange={onTableChange}
 
                        components={{
                            body: {
@@ -409,6 +478,20 @@ const Packs = () => {
                        }}
                 />
             </Form>
+
+            {
+                mainError &&
+                <Alert
+                    style={{position: 'absolute'}}
+                    message="Error"
+                    description={mainError}
+                    type="error"
+                    showIcon
+                    closable
+                    onClose={onErrorAlertClose}
+                />
+            }
+
 
         </div>
     )

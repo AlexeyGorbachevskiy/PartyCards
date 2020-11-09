@@ -4,6 +4,7 @@ import {Dispatch} from "redux";
 import {AuthDataACResponseType} from "./authReducer";
 import {registerAPI} from "../../dal/API";
 import {setLoadingAC, SetLoadingACType} from "./loginReducer";
+import {message} from "antd";
 
 type initialStateType = typeof initialState
 const initialState = {
@@ -74,6 +75,7 @@ export const registerThunkCreator = (values: registerFieldsType) => {
                     dispatch(setRegisterStatusAC(res.status))
                     dispatch(setLoadingAC(false))
                     dispatch(setRegisterErrorAC(''))
+                    message.success('You are successfully registered. Log in now.');
 
                 })
                 .catch((e) => {

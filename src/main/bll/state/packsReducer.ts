@@ -2,6 +2,7 @@ import {Dispatch} from "redux";
 import {AuthDataACResponseType} from "./authReducer";
 import {packsAPI} from "../../dal/API";
 import {setLoadingAC, SetLoadingACType} from "./loginReducer";
+import {message} from "antd";
 
 type initialStateType = typeof initialState
 const initialState = {
@@ -21,8 +22,8 @@ const initialState = {
         token: '',
         tokenDeathTime: null as number | null,
     },
-    packsError: '',
 
+    packsError: '',
 }
 
 
@@ -52,7 +53,7 @@ export const packsReducer = (state: initialStateType = initialState, action: Act
         case SET_ERROR: {
             return {
                 ...state,
-                packsError: action.packsError
+                packsError: action.packsError,
             }
         }
 
@@ -161,7 +162,7 @@ export const getPacksThunkCreator = (min: number, max: number, page: number, pag
                     const error = e.response ? e.response.data.error : (e.message + 'more details in console')
                     console.log('Error', error)
 
-                    setPacksErrorAC(error)
+                    dispatch(setPacksErrorAC(error))
 
                     dispatch(setLoadingAC(false))
                 })
@@ -182,12 +183,14 @@ export const postNewPackThunkCreator = (min: number, max: number, packName: stri
 
                     dispatch(getPacksThunkCreator(min, max, page, pageSize))
                     dispatch(setLoadingAC(false))
+                    message.success('New pack was successfully created');
 
                 })
                 .catch((e) => {
                     const error = e.response ? e.response.data.error : (e.message + 'more details in console')
                     console.log('Error', error)
 
+                    dispatch(setPacksErrorAC(error))
                     dispatch(setLoadingAC(false))
                 })
         }
@@ -208,12 +211,14 @@ export const updatePackThunkCreator = (min: number, max: number, packId: string,
 
                     dispatch(getPacksThunkCreator(min, max, page, pageSize))
                     dispatch(setLoadingAC(false))
+                    message.success('Pack was successfully updated');
 
                 })
                 .catch((e) => {
                     const error = e.response ? e.response.data.error : (e.message + 'more details in console')
                     console.log('Error', error)
 
+                    dispatch(setPacksErrorAC(error))
                     dispatch(setLoadingAC(false))
                 })
         }
@@ -234,12 +239,14 @@ export const deletePackThunkCreator = (min: number, max: number, packId: string,
 
                     dispatch(getPacksThunkCreator(min, max, page, pageSize))
                     dispatch(setLoadingAC(false))
+                    message.success('Pack was successfully deleted');
 
                 })
                 .catch((e) => {
                     const error = e.response ? e.response.data.error : (e.message + 'more details in console')
                     console.log('Error', error)
 
+                    dispatch(setPacksErrorAC(error))
                     dispatch(setLoadingAC(false))
                 })
         }
@@ -247,15 +254,14 @@ export const deletePackThunkCreator = (min: number, max: number, packId: string,
 }
 
 
-
-export const searchForPackName = (packName: string, myAccountId: string,min: number, max: number, page: number, pageSize: number) => {
+export const searchForPackName = (packName: string, myAccountId: string, min: number, max: number, page: number, pageSize: number) => {
     return (
         (dispatch: Dispatch<ActionTypes | AuthDataACResponseType | SetLoadingACType | SetPacksErrorACType>) => {
 
             // loader appears
             dispatch(setLoadingAC(true))
 
-            packsAPI.searchForPackName(packName,myAccountId,min, max, page, pageSize)
+            packsAPI.searchForPackName(packName, myAccountId, min, max, page, pageSize)
                 .then((res) => {
                     console.log(res)
 
@@ -268,7 +274,36 @@ export const searchForPackName = (packName: string, myAccountId: string,min: num
                     const error = e.response ? e.response.data.error : (e.message + 'more details in console')
                     console.log('Error', error)
 
-                    setPacksErrorAC(error)
+                    dispatch(setPacksErrorAC(error))
+
+                    dispatch(setLoadingAC(false))
+                })
+        }
+    )
+}
+
+
+export const sortPacks = (sortField: string, sortOrder: string, packName: string, myAccountId: string, min: number, max: number, page: number, pageSize: number) => {
+    return (
+        (dispatch: Dispatch<ActionTypes | AuthDataACResponseType | SetLoadingACType | SetPacksErrorACType>) => {
+
+            // loader appears
+            dispatch(setLoadingAC(true))
+
+            packsAPI.sortPacks(sortField, sortOrder, packName, myAccountId, min, max, page, pageSize)
+                .then((res) => {
+                    console.log(res)
+
+                    dispatch(setPacksDataAC(res.data))
+                    dispatch(setMinMaxCardsCountsAC(min, max))
+                    dispatch(setLoadingAC(false))
+
+                })
+                .catch((e) => {
+                    const error = e.response ? e.response.data.error : (e.message + 'more details in console')
+                    console.log('Error', error)
+
+                    dispatch(setPacksErrorAC(error))
 
                     dispatch(setLoadingAC(false))
                 })

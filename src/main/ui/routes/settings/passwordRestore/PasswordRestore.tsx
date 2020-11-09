@@ -85,10 +85,6 @@ const PasswordRestore = () => {
                 {
                     passwordRestoreError && <p className={style.error}>{passwordRestoreError}</p>
                 }
-                {
-                    successMessage && <p className={style.successMessage}>{successMessage}</p>
-                }
-
 
                 <Button onClick={sendLinkToEmail} style={{width: '150px'}}>Send</Button>
             </div>
