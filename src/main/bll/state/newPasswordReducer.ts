@@ -2,6 +2,7 @@
 import {Dispatch} from "redux";
 import {setLoadingAC, SetLoadingACType} from "./loginReducer";
 import {settingsAPI} from "../../dal/API";
+import {message} from "antd";
 
 type initialStateType = typeof initialState
 const initialState= {
@@ -66,6 +67,7 @@ export const setNewPasswordThunkCreator = (password: string, token:string) => {
                     dispatch(setNewPasswordSuccessMessageAC(res.data.info))
                     dispatch(setNewPasswordErrorAC(''))
                     dispatch(setLoadingAC(false))
+                    message.success('Password was successfully changed. Log in now.');
 
                 })
                 .catch((e) => {

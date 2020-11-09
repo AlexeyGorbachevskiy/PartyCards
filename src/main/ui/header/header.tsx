@@ -1,13 +1,11 @@
 import React, {useState} from 'react';
 import style from './header.module.scss'
 import {NavLink} from "react-router-dom";
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faAngleDown} from '@fortawesome/free-solid-svg-icons'
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootType} from "../../bll/state/store";
 import {logoutThunkCreator} from "../../bll/state/loginReducer";
 
-const arrowDownElement = <FontAwesomeIcon className={style.arrow_down} icon={faAngleDown}/>
+
 
 
 const Header = () => {
@@ -15,10 +13,7 @@ const Header = () => {
     //for header background color
     const isCurrentPageProfile = useSelector<AppRootType, boolean>(state => state.app.isCurrentPageProfile);
 
-
     const [isToggleCollapsed, setToggleCollapsed] = useState<boolean>(true);
-    const [isFeaturesSubMenuExpanded, setFeaturesSubMenuExpanded] = useState<boolean>(false);
-    const [isSettingsSubMenuExpanded, setSettingsSubMenuExpanded] = useState<boolean>(false);
 
     let isAuth = useSelector<AppRootType, boolean>(state => state.auth.isAuth);
     const dispatch = useDispatch();
@@ -32,26 +27,7 @@ const Header = () => {
 
     }
 
-    const onExpandFeaturesSubMenu = () => {
-        if (isSettingsSubMenuExpanded) {
-            setSettingsSubMenuExpanded(false)
-        }
-        setFeaturesSubMenuExpanded(!isFeaturesSubMenuExpanded)
 
-    }
-    const onExpandSettingsSubMenu = () => {
-        if (isFeaturesSubMenuExpanded) {
-            setFeaturesSubMenuExpanded(false)
-        }
-        setSettingsSubMenuExpanded(!isSettingsSubMenuExpanded)
-    }
-
-    const onBlurFeaturesSubMenu = () => {
-        setFeaturesSubMenuExpanded(false)
-    }
-    const onBlurSettingsSubMenu = () => {
-        setSettingsSubMenuExpanded(false)
-    }
 
 
     return (
@@ -83,25 +59,9 @@ const Header = () => {
 
                     {/*<li>*/}
                     {/*    <NavLink activeClassName={style.active_link} className={style.link}*/}
-                    {/*             to={'/features'}>Features {arrowDownElement}</NavLink>*/}
-                    {/*    <ul className={style.sub_menu_wrapper}>*/}
-                    {/*        <li>*/}
-                    {/*            <NavLink activeClassName={style.active_link} className={style.sub_link}*/}
-                    {/*                     to={'/feature0'}>Feature 0</NavLink>*/}
-                    {/*        </li>*/}
-
-                    {/*        /!*<li>*!/*/}
-                    {/*        /!*    <NavLink activeClassName={style.active_link} className={style.sub_link}*!/*/}
-                    {/*        /!*             to={'/feature_1'}>Feature 1</NavLink>*!/*/}
-                    {/*        /!*</li>*!/*/}
-                    {/*        /!*<li>*!/*/}
-                    {/*        /!*    <NavLink activeClassName={style.active_link} className={style.sub_link}*!/*/}
-                    {/*        /!*             to={'/feature_2'}>Feature 2</NavLink>*!/*/}
-                    {/*        /!*</li>*!/*/}
-
-                    {/*    </ul>*/}
-
+                    {/*             to={'/cards'}>Cards</NavLink>*/}
                     {/*</li>*/}
+
 
 
                     {

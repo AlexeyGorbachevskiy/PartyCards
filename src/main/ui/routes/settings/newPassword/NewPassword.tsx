@@ -85,9 +85,6 @@ const NewPassword = () => {
                 {
                     newPasswordError && <p className={style.error}>{newPasswordError}</p>
                 }
-                {
-                    successMessage && <p className={style.successMessage}>{successMessage}</p>
-                }
 
 
                 <Button onClick={sendLinkToEmail} style={{width: '150px'}}>Save</Button>

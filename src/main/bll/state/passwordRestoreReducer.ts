@@ -1,6 +1,7 @@
 import {Dispatch} from "redux";
 import {settingsAPI} from "../../dal/API";
 import {setLoadingAC, SetLoadingACType} from "./loginReducer";
+import {message} from "antd";
 
 type initialStateType = typeof initialState
 const initialState= {
@@ -68,6 +69,7 @@ export const restorePasswordThunkCreator = (email: string) => {
                     dispatch(setSettingsSuccessMessageAC(res.data.info))
                     dispatch(setSettingsErrorAC(''))
                     dispatch(setLoadingAC(false))
+                    message.success('Check your email for link');
 
                 })
                 .catch((e) => {

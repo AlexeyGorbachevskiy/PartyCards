@@ -68,8 +68,8 @@ export const settingsAPI = {
                 message: `<div style="background-color: lime; padding:15px; font-size: 16px">
 Password recovery link: 
 <!--TODO Change before every deploy-->
-<a href="https://alexeygorbachevskiy.github.io/PartyCards/#/new_password/$token$">Link</a>
-<!--<a href="http://localhost:3000/PartyCards#/new_password/$token$">Link</a>-->
+<!--<a href="https://alexeygorbachevskiy.github.io/PartyCards/#/new_password/$token$">Link</a>-->
+<a href="http://localhost:3000/PartyCards#/new_password/$token$">Link</a>
 </div>`
             })
         )
@@ -106,11 +106,32 @@ export const packsAPI = {
             axiosInstance.delete(`cards/pack?id=${packId}`)
         )
     },
-    searchForPackName(packName: string, myAccountId: string,min: number, max: number, page: number, pageSize: number){
-        console.log(myAccountId)
+    searchForPackName(packName: string, myAccountId: string, min: number, max: number, page: number, pageSize: number) {
         return (
             axiosInstance.get(`cards/pack?&pageCount=${pageSize}&page=${page}&min=${min}&max=${max}&packName=${packName}&user_id=${myAccountId}`)
         )
-    }
+    },
+    sortPacks(sortField: string, sortOrder: string, packName: string, myAccountId: string, min: number, max: number, page: number, pageSize: number) {
+        let sortOrderNumber: string | number = '';
+        if (sortOrder === 'ascend') {
+            sortOrderNumber = 1;
+        } else if (sortOrder === 'descend') {
+            sortOrderNumber = 0;
+        }
+
+        let sortOrderResult = '';
+        if (sortOrderNumber !== '') {
+            sortOrderResult = `${sortOrderNumber}${sortField}`
+        }
+
+
+
+        return (
+            axiosInstance.get(`cards/pack?&sortPacks=${sortOrderResult}&pageCount=${pageSize}&page=${page}&min=${min}&max=${max}&packName=${packName}&user_id=${myAccountId}`)
+        )
+    },
+
+
+    // .sortPacks(sortField: string, sortOrder: number | '', packName, myAccountId, min, max, page, pageSize)
 
 }
