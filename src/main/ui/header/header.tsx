@@ -6,8 +6,6 @@ import {AppRootType} from "../../bll/state/store";
 import {logoutThunkCreator} from "../../bll/state/loginReducer";
 
 
-
-
 const Header = () => {
 
     //for header background color
@@ -27,7 +25,8 @@ const Header = () => {
 
     }
 
-
+    const chosenPackId = useSelector<AppRootType, string | null>(state => state.cards.chosenPackData.packId);
+    const chosenPackName = useSelector<AppRootType, string | null>(state => state.cards.chosenPackData.packName);
 
 
     return (
@@ -57,11 +56,10 @@ const Header = () => {
                                  to={'/packs'}>Packs</NavLink>
                     </li>
 
-                    {/*<li>*/}
-                    {/*    <NavLink activeClassName={style.active_link} className={style.link}*/}
-                    {/*             to={'/cards'}>Cards</NavLink>*/}
-                    {/*</li>*/}
-
+                    <li>
+                        <NavLink activeClassName={style.active_link} className={style.link}
+                                 to={`${chosenPackId ? "/cards/" + chosenPackName + '/' + chosenPackId : "/cards/noName/noId"}`}>Cards</NavLink>
+                    </li>
 
 
                     {
@@ -127,6 +125,10 @@ const Header = () => {
                     <NavLink activeClassName={style.active_link} className={style.link}
                              to={'/packs'}>Packs</NavLink>
                 </li>
+                <li>
+                    <NavLink activeClassName={style.active_link} className={style.link}
+                             to={`${chosenPackId ? "/cards/" + chosenPackName + '/' + chosenPackId : "/cards/noName/noId"}`}>Cards</NavLink>
+                </li>
 
 
                 {
@@ -136,7 +138,6 @@ const Header = () => {
                                      to={'/password_restore'}>Restore</NavLink>
                         </li>
                 }
-
 
 
                 {

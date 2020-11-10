@@ -1,13 +1,16 @@
 import React, {ChangeEvent, MouseEvent, useEffect, useState} from 'react';
 import style from './Packs.module.scss'
-import {Alert, Button, Checkbox, Form, Input, message, Modal, Popconfirm, Slider, Space, Table} from "antd";
+import {Alert, Button, Checkbox, Form, Input, Modal, Popconfirm, Slider, Space, Table} from "antd";
 import 'antd/dist/antd.css';
 import {useDispatch, useSelector} from "react-redux";
 import {
     deletePackThunkCreator,
     getPacksThunkCreator,
     PacksDataType,
-    postNewPackThunkCreator, searchForPackName, setPacksErrorAC, sortPacks,
+    postNewPackThunkCreator,
+    searchForPackName,
+    setPacksErrorAC,
+    sortPacks,
     updatePackThunkCreator
 } from "../../../bll/state/packsReducer";
 import {withAuthRedirect} from "../../../utilities/hoc/withAuthRedirect";
@@ -15,6 +18,9 @@ import {compose} from "redux";
 import {AppRootType} from "../../../bll/state/store";
 import {CheckboxChangeEvent} from "antd/es/checkbox";
 import Search from "antd/es/input/Search";
+import {NavLink} from "react-router-dom";
+import Cards from "../cards/Cards";
+import {setChosenPackDataAC} from "../../../bll/state/cardsReducer";
 
 
 const Packs = () => {
@@ -36,6 +42,18 @@ const Packs = () => {
     const [form] = Form.useForm();
     const [editingKey, setEditingKey] = useState('');
     const isEditing = (record: Item) => record.key === editingKey;
+
+
+    const transitionToCards = (record: any) => {
+
+        const packName=packsData.cardPacks[+record.key - 1].name
+        const packId=packsData.cardPacks[+record.key - 1]._id
+        const cardsCount=packsData.cardPacks[+record.key - 1].cardsCount
+
+        dispatch(setChosenPackDataAC({packName,packId,cardsCount}))
+
+    }
+
     const columns = [
         {
             title: 'Id',
@@ -77,6 +95,7 @@ const Packs = () => {
             align: 'center' as 'center',
             render: (_: any, record: Item) => {
                 const editable = isEditing(record);
+
                 return editable ? (
                     <Space size="middle">
                         <span>
@@ -107,7 +126,8 @@ const Packs = () => {
             align: 'center' as 'center',
             render: (text: any, record: any) => (
                 <Space size="middle">
-                    <a>Cards</a>
+                    <NavLink onClick={() => transitionToCards(record)}
+                             to={`/cards/${packsData.cardPacks[+record.key - 1].name}/${packsData.cardPacks[+record.key - 1]._id}`}>Cards</NavLink>
                 </Space>
             ),
         },
@@ -152,22 +172,13 @@ const Packs = () => {
             myId = myAccountId
         }
 
+        console.log(sorter.column)
+
         if (sorter.column) {
 
             dispatch(sortPacks(
                 sorter.column.dataIndex,
                 sorter.order,
-                searchInputValue,
-                myId,
-                currentMinCardsCount,
-                currentMaxCardsCount,
-                currentPage,
-                pageSize
-            ))
-        } else {
-            dispatch(sortPacks(
-                'updated',
-                'descend',
                 searchInputValue,
                 myId,
                 currentMinCardsCount,
