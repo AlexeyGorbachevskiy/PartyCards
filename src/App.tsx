@@ -17,6 +17,7 @@ import Preloader from "./main/ui/common/preloader/Preloader";
 import {initializeAppThunkCreator} from "./main/bll/state/appReducer";
 import Packs from "./main/ui/routes/packs/Packs";
 import Cards from "./main/ui/routes/cards/Cards";
+import {PacksDataType} from "./main/bll/state/packsReducer";
 
 const App = () => {
 
@@ -24,7 +25,7 @@ const App = () => {
 
     const userId = useSelector<AppRootType, string>(state => state.login._id);
     useEffect(() => {
-        if(!userId){
+        if (!userId) {
             dispatch(initializeAppThunkCreator());
         }
 
@@ -32,8 +33,8 @@ const App = () => {
 
     const initialized = useSelector<AppRootType, boolean>(state => state.app.initialized);
     if (!initialized) {
-        return(
-            <div className="App" style={{display:'flex', justifyContent:'center',alignItems:'center'}}>
+        return (
+            <div className="App" style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                 <Preloader/>
             </div>
         )
@@ -48,7 +49,7 @@ const App = () => {
             <Route path='/home' render={() => <Home/>}/>
             <Route path='/profile' render={() => <Profile/>}/>
             <Route path='/packs' render={() => <Packs/>}/>
-            <Route path='/cards' render={() => <Cards/>}/>
+            <Route path='/cards/:packName/:packId' render={() => <Cards/>}/>
             <Route path='/login' render={() => <Login/>}/>
             <Route path='/register' render={() => <Register/>}/>
             <Route path='/settings' render={() => <Settings/>}/>

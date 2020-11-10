@@ -159,7 +159,7 @@ export const getPacksThunkCreator = (min: number, max: number, page: number, pag
 
                 })
                 .catch((e) => {
-                    const error = e.response ? e.response.data.error : (e.message + 'more details in console')
+                    const error = e.response ? e.response.data.error : (e.message + ' more details in console')
                     console.log('Error', error)
 
                     dispatch(setPacksErrorAC(error))
@@ -187,7 +187,7 @@ export const postNewPackThunkCreator = (min: number, max: number, packName: stri
 
                 })
                 .catch((e) => {
-                    const error = e.response ? e.response.data.error : (e.message + 'more details in console')
+                    const error = e.response ? e.response.data.error : (e.message + ' more details in console')
                     console.log('Error', error)
 
                     dispatch(setPacksErrorAC(error))
@@ -215,7 +215,7 @@ export const updatePackThunkCreator = (min: number, max: number, packId: string,
 
                 })
                 .catch((e) => {
-                    const error = e.response ? e.response.data.error : (e.message + 'more details in console')
+                    const error = e.response ? e.response.data.error : (e.message + ' more details in console')
                     console.log('Error', error)
 
                     dispatch(setPacksErrorAC(error))
@@ -243,7 +243,7 @@ export const deletePackThunkCreator = (min: number, max: number, packId: string,
 
                 })
                 .catch((e) => {
-                    const error = e.response ? e.response.data.error : (e.message + 'more details in console')
+                    const error = e.response ? e.response.data.error : (e.message + ' more details in console')
                     console.log('Error', error)
 
                     dispatch(setPacksErrorAC(error))
@@ -271,7 +271,7 @@ export const searchForPackName = (packName: string, myAccountId: string, min: nu
 
                 })
                 .catch((e) => {
-                    const error = e.response ? e.response.data.error : (e.message + 'more details in console')
+                    const error = e.response ? e.response.data.error : (e.message + ' more details in console')
                     console.log('Error', error)
 
                     dispatch(setPacksErrorAC(error))
@@ -300,7 +300,7 @@ export const sortPacks = (sortField: string, sortOrder: string, packName: string
 
                 })
                 .catch((e) => {
-                    const error = e.response ? e.response.data.error : (e.message + 'more details in console')
+                    const error = e.response ? e.response.data.error : (e.message + ' more details in console')
                     console.log('Error', error)
 
                     dispatch(setPacksErrorAC(error))

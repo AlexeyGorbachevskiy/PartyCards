@@ -68,8 +68,8 @@ export const settingsAPI = {
                 message: `<div style="background-color: lime; padding:15px; font-size: 16px">
 Password recovery link: 
 <!--TODO Change before every deploy-->
-<!--<a href="https://alexeygorbachevskiy.github.io/PartyCards/#/new_password/$token$">Link</a>-->
-<a href="http://localhost:3000/PartyCards#/new_password/$token$">Link</a>
+<a href="https://alexeygorbachevskiy.github.io/PartyCards/#/new_password/$token$">Link</a>
+<!--<a href="http://localhost:3000/PartyCards#/new_password/$token$">Link</a>-->
 </div>`
             })
         )
@@ -124,14 +124,23 @@ export const packsAPI = {
             sortOrderResult = `${sortOrderNumber}${sortField}`
         }
 
-
-
         return (
             axiosInstance.get(`cards/pack?&sortPacks=${sortOrderResult}&pageCount=${pageSize}&page=${page}&min=${min}&max=${max}&packName=${packName}&user_id=${myAccountId}`)
         )
     },
 
+}
 
-    // .sortPacks(sortField: string, sortOrder: number | '', packName, myAccountId, min, max, page, pageSize)
+export const cardsAPI = {
+    getPacks(packId: string, chosenPackCardsCount: number | null) {
+
+        let pageCount = 26;
+        if (chosenPackCardsCount) {
+            pageCount = chosenPackCardsCount;
+        }
+        return (
+            axiosInstance.get(`cards/card?&cardsPack_id=${packId}&pageCount=${pageCount}`)
+        )
+    },
 
 }
