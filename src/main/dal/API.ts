@@ -5,8 +5,8 @@ import {registerFieldsType} from "../bll/state/registerReducer";
 const axiosInstance = axios.create(
     {
         // TODO Change before every deploy
-        baseURL: 'https://neko-back.herokuapp.com/2.0/',
-        // baseURL: 'http://localhost:7542/2.0/',
+        // baseURL: 'https://neko-back.herokuapp.com/2.0/',
+        baseURL: 'http://localhost:7542/2.0/',
         withCredentials: true,
         // headers: {'API-KEY': '0b2bdd80-32f2-11ea-aa6d-ebd61add4aaa'}
     },
@@ -68,8 +68,8 @@ export const settingsAPI = {
                 message: `<div style="background-color: lime; padding:15px; font-size: 16px">
 Password recovery link: 
 <!--TODO Change before every deploy-->
-<a href="https://alexeygorbachevskiy.github.io/PartyCards/#/new_password/$token$">Link</a>
-<!--<a href="http://localhost:3000/PartyCards#/new_password/$token$">Link</a>-->
+<!--<a href="https://alexeygorbachevskiy.github.io/PartyCards/#/new_password/$token$">Link</a>-->
+<a href="http://localhost:3000/PartyCards#/new_password/$token$">Link</a>
 </div>`
             })
         )
@@ -132,7 +132,7 @@ export const packsAPI = {
 }
 
 export const cardsAPI = {
-    getPacks(packId: string, chosenPackCardsCount: number | null) {
+    getCards(packId: string, chosenPackCardsCount: number | null) {
 
         let pageCount = 26;
         if (chosenPackCardsCount) {
@@ -140,6 +140,18 @@ export const cardsAPI = {
         }
         return (
             axiosInstance.get(`cards/card?&cardsPack_id=${packId}&pageCount=${pageCount}`)
+        )
+    },
+    postCard(packId: string, question: string, answer: string) {
+
+        return (
+            axiosInstance.post(`cards/card`, {card: {cardsPack_id: packId, question, answer}})
+        )
+    },
+    deleteCard(cardId: string) {
+
+        return (
+            axiosInstance.delete(`cards/card?id=${cardId}`)
         )
     },
 
