@@ -2,6 +2,7 @@ import {Dispatch} from "redux";
 import {AuthDataACResponseType} from "./authReducer";
 import {cardsAPI} from "../../dal/API";
 import {setLoadingAC, SetLoadingACType} from "./loginReducer";
+import {message} from "antd";
 
 type initialStateType = typeof initialState
 const initialState = {
@@ -116,7 +117,7 @@ export const setCardsErrorAC = (cardsError: string): SetCardsErrorACType => {
     return {type: 'SET_ERROR', cardsError}
 }
 
-export const SetCardsDataAC = (cardsData: CardsDataType): SetCardsDataACType => {
+export const setCardsDataAC = (cardsData: CardsDataType): SetCardsDataACType => {
     return {type: 'SET_CARDS_DATA', cardsData}
 }
 
@@ -128,10 +129,10 @@ export const getCardsThunkCreator = (packId: string, chosenPackCardsCount: numbe
             // loader appears
             dispatch(setLoadingAC(true))
 
-            cardsAPI.getPacks(packId, chosenPackCardsCount)
+            cardsAPI.getCards(packId, chosenPackCardsCount)
                 .then((res) => {
                     console.log(res)
-                    dispatch(SetCardsDataAC(res.data))
+                    dispatch(setCardsDataAC(res.data))
                     dispatch(setLoadingAC(false))
 
                 })
@@ -169,3 +170,59 @@ export const setChosenPackDataAC = (chosenPackData: ChosenPackDataType): SetChos
 export const resetCardsStateAC = (): ResetCardsStateACType => {
     return {type: 'RESET_CARDS_STATE'}
 }
+
+
+export const postCardThunkCreator = (packId: string, question: string, answer: string) => {
+    return (
+        (dispatch: Dispatch<ActionTypes | AuthDataACResponseType | SetLoadingACType | any>) => {
+
+            // loader appears
+            dispatch(setLoadingAC(true))
+
+            cardsAPI.postCard(packId, question,answer)
+                .then((res) => {
+                    console.log(res)
+                    dispatch(getCardsThunkCreator(packId, 26))
+                    dispatch(setLoadingAC(false))
+                    message.success('Card was successfully created');
+                })
+                .catch((e) => {
+                    const error = e.response ? e.response.data.error : (e.message + ' more details in console')
+                    console.log('Error', error)
+
+                    dispatch(setCardsErrorAC(error))
+
+                    dispatch(setLoadingAC(false))
+                })
+        }
+    )
+}
+
+
+export const deleteCardThunkCreator = (packId: string, cardId:string) => {
+    return (
+        (dispatch: Dispatch<ActionTypes | AuthDataACResponseType | SetLoadingACType | any>) => {
+
+            // loader appears
+            dispatch(setLoadingAC(true))
+
+            cardsAPI.deleteCard(cardId)
+                .then((res) => {
+                    console.log(res)
+                    dispatch(getCardsThunkCreator(packId, 26))
+                    dispatch(setLoadingAC(false))
+                    message.success('Card was successfully deleted');
+
+                })
+                .catch((e) => {
+                    const error = e.response ? e.response.data.error : (e.message + ' more details in console')
+                    console.log('Error', error)
+
+                    dispatch(setCardsErrorAC(error))
+
+                    dispatch(setLoadingAC(false))
+                })
+        }
+    )
+}
+

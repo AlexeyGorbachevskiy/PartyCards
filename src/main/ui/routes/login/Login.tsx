@@ -73,11 +73,11 @@ const Login = () => {
             <div className={style.login_form}>
                 <h2>Log In</h2>
 
-                {/*<div className={style.credentials}>*/}
-                {/*    <p>Email: "alexeygorbachevskiyy@gmail.com" </p>*/}
+                <div className={style.credentials}>
+                    <p>Email: "alexeygorbachevskiyy@gmail.com" </p>
 
-                {/*    <p> Password: "alexeygorbachevskiy"</p>*/}
-                {/*</div>*/}
+                    <p> Password: "alexeygorbachevskiy"</p>
+                </div>
 
                 <div className={style.form}>
                     <Input style={errorStyle} onChange={(e) => {
