@@ -5,8 +5,8 @@ import {registerFieldsType} from "../bll/state/registerReducer";
 const axiosInstance = axios.create(
     {
         // TODO Change before every deploy
-        // baseURL: 'https://neko-back.herokuapp.com/2.0/',
-        baseURL: 'http://localhost:7542/2.0/',
+        baseURL: 'https://neko-back.herokuapp.com/2.0/',
+        // baseURL: 'http://localhost:7542/2.0/',
         withCredentials: true,
         // headers: {'API-KEY': '0b2bdd80-32f2-11ea-aa6d-ebd61add4aaa'}
     },
@@ -68,8 +68,8 @@ export const settingsAPI = {
                 message: `<div style="background-color: lime; padding:15px; font-size: 16px">
 Password recovery link: 
 <!--TODO Change before every deploy-->
-<!--<a href="https://alexeygorbachevskiy.github.io/PartyCards/#/new_password/$token$">Link</a>-->
-<a href="http://localhost:3000/PartyCards#/new_password/$token$">Link</a>
+<a href="https://alexeygorbachevskiy.github.io/PartyCards/#/new_password/$token$">Link</a>
+<!--<a href="http://localhost:3000/PartyCards#/new_password/$token$">Link</a>-->
 </div>`
             })
         )
@@ -132,14 +132,27 @@ export const packsAPI = {
 }
 
 export const cardsAPI = {
-    getCards(packId: string, chosenPackCardsCount: number | null) {
+    getCards(packId: string, page: number, chosenPackCardsCount: number | null,sortField: string, sortOrder: string) {
 
         let pageCount = 26;
         if (chosenPackCardsCount) {
             pageCount = chosenPackCardsCount;
         }
+
+        let sortOrderNumber: string | number = '';
+        if (sortOrder === 'ascend') {
+            sortOrderNumber = 1;
+        } else if (sortOrder === 'descend') {
+            sortOrderNumber = 0;
+        }
+
+        let sortOrderResult = '';
+        if (sortOrderNumber !== '') {
+            sortOrderResult = `${sortOrderNumber}${sortField}`
+        }
+
         return (
-            axiosInstance.get(`cards/card?&cardsPack_id=${packId}&pageCount=${pageCount}`)
+            axiosInstance.get(`cards/card?&cardsPack_id=${packId}&page=${page}&pageCount=${pageCount}&sortCards=${sortOrderResult}`)
         )
     },
     postCard(packId: string, question: string, answer: string) {
@@ -152,6 +165,34 @@ export const cardsAPI = {
 
         return (
             axiosInstance.delete(`cards/card?id=${cardId}`)
+        )
+    },
+    editCard(cardId: string, question: string, answer: string) {
+        return (
+            axiosInstance.put(`cards/card`, {card: {_id: cardId, question, answer}})
+        )
+    },
+
+    searchForCardQuestion(packId: string, question: string | null, currentPage: number, pageSize: number) {
+        return (
+            axiosInstance.get(`cards/card?&cardsPack_id=${packId}&cardQuestion=${question}&page=${currentPage}&pageCount=${pageSize}`)
+        )
+    },
+    sortCards(packId: string, sortField: string, sortOrder: string, currentPage: number, pageSize: number) {
+        let sortOrderNumber: string | number = '';
+        if (sortOrder === 'ascend') {
+            sortOrderNumber = 1;
+        } else if (sortOrder === 'descend') {
+            sortOrderNumber = 0;
+        }
+
+        let sortOrderResult = '';
+        if (sortOrderNumber !== '') {
+            sortOrderResult = `${sortOrderNumber}${sortField}`
+        }
+
+        return (
+            axiosInstance.get(`cards/card?&sortCards=${sortOrderResult}&cardsPack_id=${packId}&page=${currentPage}&pageCount=${pageSize}`)
         )
     },
 
