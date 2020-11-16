@@ -46,11 +46,11 @@ const Packs = () => {
 
     const transitionToCards = (record: any) => {
 
-        const packName=packsData.cardPacks[+record.key - 1].name
-        const packId=packsData.cardPacks[+record.key - 1]._id
-        const cardsCount=packsData.cardPacks[+record.key - 1].cardsCount
+        const packName = packsData.cardPacks[+record.key - 1].name
+        const packId = packsData.cardPacks[+record.key - 1]._id
+        const cardsCount = packsData.cardPacks[+record.key - 1].cardsCount
 
-        dispatch(setChosenPackDataAC({packName,packId,cardsCount}))
+        dispatch(setChosenPackDataAC({packName, packId, cardsCount}))
 
     }
 
@@ -61,6 +61,13 @@ const Packs = () => {
             key: 'id',
             align: 'center' as 'center',
             width: '7%'
+        },
+        {
+            title: 'User name',
+            dataIndex: 'userName',
+            key: 'userName',
+            align: 'center' as 'center',
+            width: '10%',
         },
         {
             title: 'Pack name',
@@ -155,6 +162,7 @@ const Packs = () => {
             {
                 key: index + 1,
                 id: id,
+                userName: el.user_name,
                 name: el.name,
                 cardsCount: el.cardsCount,
                 updated: new Date(el.updated).toLocaleString(),

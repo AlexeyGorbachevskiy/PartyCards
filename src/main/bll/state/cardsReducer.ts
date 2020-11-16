@@ -122,14 +122,14 @@ export const setCardsDataAC = (cardsData: CardsDataType): SetCardsDataACType => 
 }
 
 
-export const getCardsThunkCreator = (packId: string, chosenPackCardsCount: number | null) => {
+export const getCardsThunkCreator = (packId: string, page: number, chosenPackCardsCount: number | null, sortField: string, sortOrder: string) => {
     return (
         (dispatch: Dispatch<ActionTypes | AuthDataACResponseType | SetLoadingACType>) => {
 
             // loader appears
             dispatch(setLoadingAC(true))
 
-            cardsAPI.getCards(packId, chosenPackCardsCount)
+            cardsAPI.getCards(packId, page, chosenPackCardsCount, sortField, sortOrder)
                 .then((res) => {
                     console.log(res)
                     dispatch(setCardsDataAC(res.data))
@@ -172,17 +172,17 @@ export const resetCardsStateAC = (): ResetCardsStateACType => {
 }
 
 
-export const postCardThunkCreator = (packId: string, question: string, answer: string) => {
+export const postCardThunkCreator = (packId: string, question: string, answer: string, currentPage: number, pageSize: number, sortColumn: any, sortOrder: any) => {
     return (
         (dispatch: Dispatch<ActionTypes | AuthDataACResponseType | SetLoadingACType | any>) => {
 
             // loader appears
             dispatch(setLoadingAC(true))
 
-            cardsAPI.postCard(packId, question,answer)
+            cardsAPI.postCard(packId, question, answer)
                 .then((res) => {
                     console.log(res)
-                    dispatch(getCardsThunkCreator(packId, 26))
+                    dispatch(getCardsThunkCreator(packId, currentPage, pageSize, sortColumn, sortOrder))
                     dispatch(setLoadingAC(false))
                     message.success('Card was successfully created');
                 })
@@ -199,7 +199,7 @@ export const postCardThunkCreator = (packId: string, question: string, answer: s
 }
 
 
-export const deleteCardThunkCreator = (packId: string, cardId:string) => {
+export const deleteCardThunkCreator = (packId: string, cardId: string, currentPage: number, pageSize: number, sortColumn: any, sortOrder: any) => {
     return (
         (dispatch: Dispatch<ActionTypes | AuthDataACResponseType | SetLoadingACType | any>) => {
 
@@ -209,7 +209,7 @@ export const deleteCardThunkCreator = (packId: string, cardId:string) => {
             cardsAPI.deleteCard(cardId)
                 .then((res) => {
                     console.log(res)
-                    dispatch(getCardsThunkCreator(packId, 26))
+                    dispatch(getCardsThunkCreator(packId, currentPage, pageSize, sortColumn, sortOrder))
                     dispatch(setLoadingAC(false))
                     message.success('Card was successfully deleted');
 
@@ -225,4 +225,60 @@ export const deleteCardThunkCreator = (packId: string, cardId:string) => {
         }
     )
 }
+
+
+export const updateCardThunkCreator = (packId: string, cardId: string, question: string, answer: string, currentPage: number,pageSize:number, sortColumn:any, sortOrder:any) => {
+    return (
+        (dispatch: Dispatch<ActionTypes | AuthDataACResponseType | SetLoadingACType | any>) => {
+
+            // loader appears
+            dispatch(setLoadingAC(true))
+
+            cardsAPI.editCard(cardId, question, answer)
+                .then((res) => {
+                    console.log(res)
+                    dispatch(getCardsThunkCreator(packId, currentPage, pageSize,sortColumn,sortOrder))
+                    dispatch(setLoadingAC(false))
+                    message.success('Card was successfully updated');
+                })
+                .catch((e) => {
+                    const error = e.response ? e.response.data.error : (e.message + ' more details in console')
+                    console.log('Error', error)
+
+                    dispatch(setCardsErrorAC(error))
+
+                    dispatch(setLoadingAC(false))
+                })
+        }
+    )
+}
+
+
+export const searchForCardQuestion = (packId: string, question: string | null, currentPage: number, pageSize: number) => {
+    return (
+        (dispatch: Dispatch<ActionTypes | AuthDataACResponseType | SetLoadingACType>) => {
+
+            // loader appears
+            dispatch(setLoadingAC(true))
+
+            cardsAPI.searchForCardQuestion(packId, question, currentPage, pageSize)
+                .then((res) => {
+                    console.log(res)
+                    dispatch(setCardsDataAC(res.data))
+                    dispatch(setLoadingAC(false))
+
+                })
+                .catch((e) => {
+                    const error = e.response ? e.response.data.error : (e.message + ' more details in console')
+                    console.log('Error', error)
+
+                    dispatch(setCardsErrorAC(error))
+
+                    dispatch(setLoadingAC(false))
+                })
+        }
+    )
+}
+
+
 
